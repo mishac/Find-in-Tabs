@@ -1,27 +1,38 @@
 <?xml version="1.0"?>
 <overlay id="findintabs" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-<script type="application/x-javascript" src="chrome://findintabs/content/findintabs.js" />  
+  <script type="application/x-javascript" src="chrome://findintabs/content/findintabs.js" />
   <broadcasterset>
     <broadcaster id="isFindInTabs" status="false"/>
   </broadcasterset>
-  
-  
-  <xul:checkbox xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="findintabs-checkbox" 
-  anonid="findintabs-checkbox" label="Find in Tabs" accesskey="t" 
-  xbl:inherits="accesskey=matchcaseaccesskey" xmlns:xbl="http://www.mozilla.org/xbl" />
-  
-  <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="findintabs-results" 
-    class="chromeclass-extrachrome" hidden="true">
-    
-    <label id="blah" value="Results:"/>
-    <listbox anonid="findintabs-results-list" id="findintabs-results-list" rows="4" onselect="_findintabs_selectresult(this.selectedIndex);">
-      <listitem label="sample result 1"/>
-      <listitem label="sample result 2"/>
-      <listitem label="sample result 3"/>
-      <listitem label="sample result 4"/>
-      <listitem label="sample result 5"/>
-      
-
-    </listbox>
-  </vbox>
+  <xul:checkbox xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="findintabs-checkbox"    anonid="findintabs-checkbox" label="Find in Tabs" accesskey="t"    xbl:inherits="accesskey=matchcaseaccesskey" xmlns:xbl="http://www.mozilla.org/xbl" />
+  <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="findintabs-results"      class="chromeclass-extrachrome" hidden="true">
+    <label id="findintabs-results-label" value="Search Results:"/>
+    <!-- <listbox anonid="findintabs-results-list" id="findintabs-results-list" rows="4"      onselect="_findintabs_selectresult(this.selectedIndex);">
+    <listitem label="sample result 1"/>
+    <listitem label="sample result 2"/>
+    <listitem label="sample result 3"/>
+    <listitem label="sample result 4"/>
+    <listitem label="sample result 5"/>
+  </listbox>-->
+  <tree anonid="findintabs-results-list" id="findintabs-results-list" rows="4"    onselect="_findintabs_selectresult(this.currentIndex);">
+    <treecols>
+      <treecol label="Tab" flex="1"/>
+      <treecol label="Result" flex="2"/>
+    </treecols>
+    <treechildren>
+      <treeitem>
+        <treerow>
+          <treecell label="Tab #1"/>
+          <treecell label="SAMPLE RESULT"/>
+        </treerow>
+      </treeitem>
+      <treeitem>
+        <treerow>
+          <treecell label="Tab #6"/>
+          <treecell label="SAMPLE RESULT 2"/>
+        </treerow>
+      </treeitem>
+    </treechildren>
+  </tree>
+</vbox>
 </overlay>
