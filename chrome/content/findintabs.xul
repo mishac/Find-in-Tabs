@@ -1,4 +1,13 @@
 <?xml version="1.0"?>
+<overlay id="findintabs"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+ <menu id="file_menu">
+  <menuitem name="Find in Tabs"/>
+ </menu>
+</overlay>
+<!--
+
 <overlay id="findintabs" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<toolbar id="FindToolbar">
@@ -6,3 +15,4 @@
 	</toolbar>
 </overlay>
 
+-->

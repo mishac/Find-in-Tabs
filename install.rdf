@@ -4,6 +4,7 @@
 
 	<Description about="urn:mozilla:install-manifest">
 		<em:id>michael.havas@gmail.com</em:id>
+		
 		<em:version>0.1</em:version>
 		<em:type>2</em:type>
 
@@ -21,6 +22,7 @@
 		<em:name>findintabs</em:name>
 		<em:description>An Extension that searches for text in all tabs</em:description>
 		<em:creator>Michael Havas</em:creator>
+		<em:contributor>Misha Chitharanjan</em:contributor>
 		<em:homepageURL>http://www.mypage.com/</em:homepageURL>
 	</Description>
 </RDF>
