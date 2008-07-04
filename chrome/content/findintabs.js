@@ -39,7 +39,6 @@ window.addEventListener("load", function() {
     return gFindBar.open_old();  
   }
   
-  repl.look();
   
   
 
