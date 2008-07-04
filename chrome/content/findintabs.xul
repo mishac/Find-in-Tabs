@@ -14,7 +14,7 @@
     class="chromeclass-extrachrome" hidden="true">
     
     <label id="blah" value="Results:"/>
-    <listbox id="findintabs-results-list" rows="4">
+    <listbox anonid="findintabs-results-list" id="findintabs-results-list" rows="4" onselect="_findintabs_selectresult(this.selectedIndex);">
       <listitem label="sample result 1"/>
       <listitem label="sample result 2"/>
       <listitem label="sample result 3"/>

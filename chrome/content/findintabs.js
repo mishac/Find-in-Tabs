@@ -13,29 +13,36 @@ var oldNode = document.getAnonymousElementByAttribute(FindToolbar, "anonid", "fi
 var bottombox = document.getElementById("browser-bottombox");
 var closebutton = document.getAnonymousElementByAttribute(FindToolbar, "anonid", "find-closebutton");
 
-//not sure what we can do with this yet, but it looks relevant.
+//not sure what we can do with these  yet, but they look relevant.
 var cmd_find = document.getElementById('cmd_find');
+var key_find = document.getElementById('key_find');
 
 //insert elements in proper position
 hbox.insertBefore(findintabscheckbox, oldNode);
 bottombox.insertBefore(findintabsresults, statusbar);
-  
+ 
 
 //function to be called when checkbox is clicked
 _findintabs_setstatus = function() {
-
   checked = findintabscheckbox.checked;
-  
   document.getElementById('isFindInTabs').status = checked;
-  
   findintabsresults.hidden = !checked;
-  
-  FindToolbar.find();
 };
 
- 
+//event called when findbar is modified, so we can open/close the results window properly
+_findtoolbar_toggle = function (event) {
+  if(event.attrName == 'hidden') {
+    if (event.newValue == 'true') 
+      findintabsresults.hidden = true;
+    else 
+      findintabsresults.hidden = !(document.getElementById('isFindInTabs').status); 
+  }
+}
+
+_findintabs_selectresult = function (id) {
+  alert("This box should probably do something when result #" + id + " is selected." );
+
+}
+
 findintabscheckbox.addEventListener('command', _findintabs_setstatus, true);
-
-//close the results bar if you close the find toolbar
-closebutton.addEventListener('command', function() { findintabsresults.hidden = true; }, true);
-
+FindToolbar.addEventListener('DOMAttrModified', _findtoolbar_toggle, true);
