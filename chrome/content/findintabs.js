@@ -7,9 +7,14 @@ findintabsresults.id = 'findintabs-results';
 //other important elements
 var FindToolbar = document.getElementById('FindToolbar');
 var statusbar = document.getElementById('status-bar');
-var hbox = document.getAnonymousNodes(FindToolbar)[0];
+
+var hbox = document.getAnonymousElementByAttribute(FindToolbar, "anonid", "findbar-container");
 var oldNode = document.getAnonymousElementByAttribute(FindToolbar, "anonid", "find-case-sensitive");
 var bottombox = document.getElementById("browser-bottombox");
+var closebutton = document.getAnonymousElementByAttribute(FindToolbar, "anonid", "find-closebutton");
+
+//not sure what we can do with this yet, but it looks relevant.
+var cmd_find = document.getElementById('cmd_find');
 
 //insert elements in proper position
 hbox.insertBefore(findintabscheckbox, oldNode);
@@ -25,6 +30,12 @@ _findintabs_setstatus = function() {
   
   findintabsresults.hidden = !checked;
   
+  FindToolbar.find();
 };
 
+ 
 findintabscheckbox.addEventListener('command', _findintabs_setstatus, true);
+
+//close the results bar if you close the find toolbar
+closebutton.addEventListener('command', function() { findintabsresults.hidden = true; }, true);
+
