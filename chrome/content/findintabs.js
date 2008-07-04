@@ -37,10 +37,7 @@ window.addEventListener("load", function() {
   gFindBar.open = function() {
     findintabsresults.hidden = !(document.getElementById('isFindInTabs').status);
     return gFindBar.open_old();  
-  }
-  
-  
-  
+  }  
 
 }, false);
 
