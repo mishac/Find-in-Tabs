@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<overlay id="findintabs" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<toolbar id="FindToolbar">
+		<checkbox id="findintabs-checkbox" label="Find in Tabs" accesskey="t" />
+	</toolbar>
+</overlay>
+

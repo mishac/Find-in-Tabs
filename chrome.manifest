@@ -1,0 +1,6 @@
+content   findintabs   chrome/content/
+
+locale    findintabs   en-US   chrome/locale/en-US/findintabs/
+
+overlay   chrome://browser/content/browser.xul   chrome://findintabs/content/findintabs.xul
+#overlay   chrome://browser/content/preferences/preferences.xul   chrome://findintabs/content/preferences.xul
