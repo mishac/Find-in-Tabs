@@ -1,9 +1,2 @@
-<<<<<<< .mine
 content   findintabs   chrome/content/
 overlay   chrome://browser/content/browser.xul   chrome://findintabs/content/findintabs.xul
-=======
-content   findintabs   chrome/content/
-
-
-overlay   chrome://browser/content/browser.xul   chrome://findintabs/content/findintabs.xul
->>>>>>> .r2
