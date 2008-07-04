@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <overlay id="findintabs" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"> 	      
-<script>
+  <script type="application/x-javascript" src="chrome://findintabs/content/findintabs.js" />  
+  <script>
     var findintabbox = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "checkbox");
     findintabbox.id = 'FindInTab';
     
@@ -9,7 +10,10 @@
     var oldNode = document.getAnonymousElementByAttribute(FindToolbar, "anonid", "find-case-sensitive");
     hbox.insertBefore(findintabbox, oldNode);
     
-  </script>      
-  <toolbar id="FindToolbar" hidden="false" />               
-  <xul:checkbox xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="FindInTab"  anonid="FindInTab" oncommand="alert(this.checked);" label="Find in Tabs" accesskey="t" xbl:inherits="accesskey=matchcaseaccesskey" xmlns:xbl="http://www.mozilla.org/xbl"/>	 
+  </script>                     
+  <xul:checkbox xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="FindInTab"  
+    anonid="FindInTab" oncommand="_findintabs(this.checked);" 
+    label="Find in Tabs" accesskey="t" 
+    xbl:inherits="accesskey=matchcaseaccesskey" 
+    xmlns:xbl="http://www.mozilla.org/xbl"/>	 
 </overlay>
