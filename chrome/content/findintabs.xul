@@ -1,12 +1,33 @@
 <?xml version="1.0"?>
+<overlay id="findintabs" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"> 	
+  <toolbar id="FindToolbar" hidden="false">		
+    <xul:hbox xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" anonid="findbar-container" class="findbar-container" flex="1" align="center">
+      <xul:toolbarbutton anonid="find-closebutton" class="findbar-closebutton" tooltiptext="Close Find bar" oncommand="close();"/>
+      <xul:label anonid="find-label" class="findbar-find-fast" control="findbar-textbox"/>
+      <xul:hbox anonid="find-field-container" class="find-field-container findbar-find-fast">
+        <xul:textbox class="findbar-textbox" anonid="findbar-textbox"/>
+        </xul:hbox>
+        <xul:hbox anonid="find-buttons-container" class="find-buttons-container">
+          <xul:toolbarbutton anonid="find-next" class="findbar-find-next tabbable" label="Next" accesskey="N" tooltiptext="Find the next occurrence of the phrase" oncommand="onFindAgainCommand(false);" disabled="true" chromedir="ltr" xbl:inherits="accesskey=findnextaccesskey" xmlns:xbl="http://www.mozilla.org/xbl"/>
+          <xul:toolbarbutton anonid="find-previous" class="findbar-find-previous tabbable" label="Previous" accesskey="P" tooltiptext="Find the previous occurrence of the phrase" oncommand="onFindAgainCommand(true);" disabled="true" chromedir="ltr" xbl:inherits="accesskey=findpreviousaccesskey" xmlns:xbl="http://www.mozilla.org/xbl"/>
+          </xul:hbox>
+          <xul:toolbarbutton anonid="highlight" class="findbar-highlight tabbable" label="Highlight all" accesskey="a" tooltiptext="Highlight all occurrences of the phrase" oncommand="toggleHighlight(this.checked);" type="checkbox" disabled="true" xbl:inherits="accesskey=highlightaccesskey" xmlns:xbl="http://www.mozilla.org/xbl"/>
+          <xul:checkbox anonid="find-case-sensitive" oncommand="_setCaseSensitivity(this.checked);" label="Match case" accesskey="c" xbl:inherits="accesskey=matchcaseaccesskey" xmlns:xbl="http://www.mozilla.org/xbl"/>
+          <xul:label anonid="match-case-status" class="findbar-find-fast"/>
+          <xul:image anonid="find-status-icon" class="findbar-find-fast find-status-icon"/>
+          <xul:description anonid="find-status" class="findbar-find-fast findbar-find-status" control="findbar-textbox">				
+            <!-- Do not use value, first child is used because it provides a11y with text change events -->		
+            </xul:description>
+            </xul:hbox>		
+            <button label="Find In Tabs" />	
+  </toolbar>
+</overlay>
 
-<overlay id="findintabs">
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<toolbar id="FindToolbar" hidden="false">
-		<xul:hbox xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" anonid="findbar-container" class="findbar-container" flex="1" align="center"><xul:toolbarbutton anonid="find-closebutton" class="findbar-closebutton" tooltiptext="Close Find bar" oncommand="close();"/><xul:label anonid="find-label" class="findbar-find-fast" control="findbar-textbox"/><xul:hbox anonid="find-field-container" class="find-field-container findbar-find-fast"><xul:textbox class="findbar-textbox" anonid="findbar-textbox"/></xul:hbox><xul:hbox anonid="find-buttons-container" class="find-buttons-container"><xul:toolbarbutton anonid="find-next" class="findbar-find-next tabbable" label="Next" accesskey="N" tooltiptext="Find the next occurrence of the phrase" oncommand="onFindAgainCommand(false);" disabled="true" chromedir="ltr" xbl:inherits="accesskey=findnextaccesskey" xmlns:xbl="http://www.mozilla.org/xbl"/><xul:toolbarbutton anonid="find-previous" class="findbar-find-previous tabbable" label="Previous" accesskey="P" tooltiptext="Find the previous occurrence of the phrase" oncommand="onFindAgainCommand(true);" disabled="true" chromedir="ltr" xbl:inherits="accesskey=findpreviousaccesskey" xmlns:xbl="http://www.mozilla.org/xbl"/></xul:hbox><xul:toolbarbutton anonid="highlight" class="findbar-highlight tabbable" label="Highlight all" accesskey="a" tooltiptext="Highlight all occurrences of the phrase" oncommand="toggleHighlight(this.checked);" type="checkbox" disabled="true" xbl:inherits="accesskey=highlightaccesskey" xmlns:xbl="http://www.mozilla.org/xbl"/><xul:checkbox anonid="find-case-sensitive" oncommand="_setCaseSensitivity(this.checked);" label="Match case" accesskey="c" xbl:inherits="accesskey=matchcaseaccesskey" xmlns:xbl="http://www.mozilla.org/xbl"/><xul:label anonid="match-case-status" class="findbar-find-fast"/><xul:image anonid="find-status-icon" class="findbar-find-fast find-status-icon"/><xul:description anonid="find-status" class="findbar-find-fast findbar-find-status" control="findbar-textbox">
-				<!-- Do not use value, first child is used because it provides a11y with text change events -->
-		</xul:description></xul:hbox>
-		<button label="Find In Tabs" />
-	</toolbar>
 
+<overlay id="sample" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"> 
+  <statusbar id="status-bar">  
+    <statusbarpanel id="my-panel" label="Hello, World" >
+    <button label="Find In Tabs" />	
+    </statusbarpanel> 
+    </statusbar>
 </overlay>
