@@ -1,0 +1,3 @@
+findbar {
+  -moz-binding: url('chrome://findintabs/content/findintabs.xml#findintabs');
+}
