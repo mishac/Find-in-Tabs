@@ -1,8 +1,32 @@
 <?xml version="1.0"?>
-
 <?xml-stylesheet href="chrome://findintabs/content/findintabs.css" type="text/css"?>
-
 <overlay id="findintabs-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-  <script type="application/x-javascript" src="chrome://findintabs/content/findintabs.js" />
+<script type="application/x-javascript" src="chrome://findintabs/content/findintabs.js" />
+  <broadcasterset>
+    <broadcaster id="isFindInTabs" status="false"/>
+  </broadcasterset>
   
+  <vbox id="browser-bottombox"> 
+    <tree anonid="findintabs-results-list" id="findintabs-results-list" insertbefore="FindToolbar" hidden="true" rows="4"    onselect="_findintabs.selectresult(this.currentIndex);" >
+    <treecols>
+      <treecol label="Tab" flex="1"/>
+      <treecol label="Result" flex="10"/>
+    </treecols>
+    <treechildren>
+      <treeitem>
+        <treerow>
+          <treecell label="Tab #1"/>
+          <treecell label="SAMPLE RESULT"/>
+        </treerow>
+      </treeitem>
+      <treeitem>
+        <treerow>
+          <treecell label="Tab #6"/>
+          <treecell label="SAMPLE RESULT 2"/>
+        </treerow>
+      </treeitem>
+    </treechildren>
+  </tree>
+  </vbox>
 </overlay>
+  
