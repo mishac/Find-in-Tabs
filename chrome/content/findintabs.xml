@@ -711,7 +711,7 @@
       <method name="_setFindInTabs">
         <parameter name="aFindInTabs"/>
         <body><![CDATA[
-          findintabs.toggleResultsList(aFindInTabs);         
+          findInTabs.toggleResultsList(aFindInTabs);         
           
         ]]></body>
 

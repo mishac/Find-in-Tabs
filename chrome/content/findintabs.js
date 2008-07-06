@@ -1,4 +1,4 @@
-var findintabs = {
+var findInTabs = {
   
   onLoad: function() {
     gFindBar.resultsList = new Array();
@@ -17,7 +17,7 @@ var findintabs = {
     // overrride opening of the findbar to open  the results bar too if it's set
     gFindBar.open_old = gFindBar.open;
     gFindBar.open = function() {
-      findintabs.toggleResultsList(findintabs.isFindInTabs);
+      findInTabs.toggleResultsList(findInTabs.isFindInTabs);
       return gFindBar.open_old();  
     }
     
@@ -25,7 +25,7 @@ var findintabs = {
     gFindBar._find_old = gFindBar._find;
     gFindBar._find = function(aValue) {
         //do it the new way
-       if (findintabs.isFindInTabs) {
+       if (findInTabs.isFindInTabs) {
       
         this.searchItem = aValue || this._findField.value;
         
@@ -43,21 +43,21 @@ var findintabs = {
         if (this._findMode != this.FIND_NORMAL)
             this._setFindCloseTimeout();
 
-          findintabs.clearList();
+          findInTabs.clearList();
           
           var numTabs = gBrowser.browsers.length;
           
           for (i = 0; i < numTabs; ++i) {
-            var frames = findintabs.getFrames(new Array(), gBrowser.getBrowserAtIndex(i).contentWindow);
+            var frames = findInTabs.getFrames(new Array(), gBrowser.getBrowserAtIndex(i).contentWindow);
             
             
             for (j = 0; j < frames.length; ++j) {
               var sel = frames[j].getSelection(); // should be an empty selection
               var body = frames[j].document.body;
               var count = body.childNodes.length;
-              var searchRange = findintabs.newRange(body, 0, body, count);
-              var startPt = findintabs.newRange(body, 0, body, 0);
-              var endPt = findintabs.newRange(body, count, body, count);
+              var searchRange = findInTabs.newRange(body, 0, body, count);
+              var startPt = findInTabs.newRange(body, 0, body, 0);
+              var endPt = findInTabs.newRange(body, count, body, count);
               var retRange = null;
               var finder = Components.classes["@mozilla.org/embedcomp/rangefind;1"]
                                      .createInstance()
@@ -73,7 +73,7 @@ var findintabs = {
                   retRange.surroundContents(newNode);*/
                 }
                 sel.addRange(retRange);
-                this.resultsList.push(new findintabs.result(retRange, frames[j], i));
+                this.resultsList.push(new findInTabs.result(retRange, frames[j], i));
                 startPt = document.createRange();
                 startPt.setStart(retRange.endContainer, retRange.endOffset);
                 startPt.collapse(true);
@@ -91,7 +91,7 @@ var findintabs = {
           var len = this.resultsList.length;
           
           if (len)
-            findintabs.updateFindStatus(true);
+            findInTabs.updateFindStatus(true);
           else {
             this._findStatusIcon.setAttribute('status', 'notfound');
             this._findStatusDesc.textContent = this._notFoundStr;
@@ -99,10 +99,10 @@ var findintabs = {
           }
           // populate the list, if our find yielded results
           if (len) {
-            window.setTimeout(function() { findintabs.populateList(); }, 0)
+            window.setTimeout(function() { findInTabs.populateList(); }, 0)
           }
           else {
-            findintabs.clearList();
+            findInTabs.clearList();
           }     
 
       } else {
@@ -233,12 +233,12 @@ var findintabs = {
   
   findFieldChanged: function(e) {
     // if the user wants to do a new find, start with a clean slate again
-    if (e.target.value != findintabs.searchItem) {
-      findintabs.clearList();
+    if (e.target.value != findInTabs.searchItem) {
+      findInTabs.clearList();
 
     }
   }
 }
 
-window.addEventListener("load", findintabs.onLoad, false);
+window.addEventListener("load", findInTabs.onLoad, false);
 
