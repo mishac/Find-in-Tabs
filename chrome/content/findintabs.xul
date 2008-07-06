@@ -2,6 +2,10 @@
 <?xml-stylesheet href="chrome://findintabs/content/findintabs.css" type="text/css"?>
 <overlay id="findintabs-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="application/x-javascript" src="chrome://findintabs/content/findintabs.js" />
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="findintabs-strings" src="chrome://findintabs/content/findintabs.properties"/>
+  </stringbundleset>
+
   <window id="main-window">
     <splitter id="findintabs-splitter" insertbefore="browser-bottombox" hidden="true" resizeafter="flex"/>
     <vbox id="browser-bottombox">
@@ -13,7 +17,7 @@
             <treecol label="Tab Name" flex="1"/>
             <treecol label="Result" flex="10"/>
           </treecols>
-          <treechildren alternatingbackground="true">
+          <treechildren id="findintabs-results-list-children">
             <treeitem>
               <treerow>
                 <treecell label="1"/>
