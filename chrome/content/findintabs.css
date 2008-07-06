@@ -1,3 +1,14 @@
 findbar {
   -moz-binding: url('chrome://findintabs/content/findintabs.xml#findintabs');
 }
+
+#findintabs-results-list {
+  margin-left: 2px;
+  margin-right: 2px;
+  height: 100px;
+  max-height: 350px;
+}
+
+#browser-bottombox {
+  max-height: 350px;
+}

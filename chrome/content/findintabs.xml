@@ -253,10 +253,10 @@
       <xul:checkbox comment="TODO:DTD"
                     anonid="find-findintabs-check"
                     id="find-findintabs-check"
-                    oncommand="_findintabs.setstatus();"
+                    oncommand="_setFindInTabs(this.checked);"
                     label="Find in Tabs"
                     accesskey="t"
-                    xbl:inherits="accesskey=matchcaseaccesskey"/>
+                    xbl:inherits="accesskey=matchcaseaccesskey" />            
                     
                     
       <xul:checkbox anonid="find-case-sensitive"
@@ -700,6 +700,22 @@
         ]]></body>
 
       </method>
+      
+
+      <!--
+        - FINDINTABS
+        - sets the findintabs broadcaster on or off;
+        - @param aFindInTabs (boolean)
+        -        Whether or not findintabs should be turned on.
+        -->
+      <method name="_setFindInTabs">
+        <parameter name="aFindInTabs"/>
+        <body><![CDATA[
+          findintabs.toggleResultsList(aFindInTabs);         
+          
+        ]]></body>
+
+      </method>      
 
       <!--
         - Opens and displays the find bar.
@@ -713,6 +729,8 @@
       <method name="open">
         <parameter name="aMode"/>
         <body><![CDATA[
+          // open the results list if the thingy is checked
+                    
           if (aMode != undefined)
             this._findMode = aMode;
 

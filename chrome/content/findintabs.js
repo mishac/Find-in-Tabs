@@ -1,41 +1,48 @@
 
-var _findintabs = {
-
-  onLoad: function() {
+var findintabs = {
   
-    var resultslist = document.getElementById('findintabs-results-list');
+  onLoad: function() {
+    this.results = new Array();
+    this.isFindInTabs = false;
     
     // overrride closeing of the findbar to close the results bar too
     gFindBar.close_old = gFindBar.close;
     gFindBar.close = function() {
-      resultslist.hidden = true;
+      document.getElementById('findintabs-splitter').hidden = true;
+      document.getElementById('findintabs-results-box').hidden = true;
       return gFindBar.close_old(); 
     }
     
     // overrride opening of the findbar to open  the results bar too if it's set
     gFindBar.open_old = gFindBar.open;
     gFindBar.open = function() {
-      resultslist.hidden = !(document.getElementById('isFindInTabs').status);
+      findintabs.toggleResultsList(findintabs.isFindInTabs);
       return gFindBar.open_old();  
-    }  
+    }
+    
+    
+    
+    this.initialized = true;
+     
     
   },
   
-  //function to be called when checkbox is clicked
-  setstatus: function(){
-    isChecked = document.getElementById('find-findintabs-check').checked;
-    document.getElementById('isFindInTabs').status = isChecked;
-    document.getElementById('findintabs-results-list').hidden = !isChecked;
+  toggleResultsList: function(aFindInTabs) {
+    this.isFindInTabs = aFindInTabs;
+    document.getElementById('findintabs-results-box').hidden =  !this.isFindInTabs;
+    document.getElementById('findintabs-splitter').hidden = !this.isFindInTabs;
+  
   },
   
-  //fucntion to be called when a result in the list is clickedf
-  selectresult: function(id) {
-    alert("This box should probably do something when result #" + id + " is selected." );
+  selectResult: function(id) {
     
+    gBrowser.mTabContainer.selectedIndex = id;
+  
   }
-
+  
+  
 }
 
-window.addEventListener("load", _findintabs.onLoad, false);
+window.addEventListener("load", findintabs.onLoad, false);
 
 

@@ -1,32 +1,36 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://findintabs/content/findintabs.css" type="text/css"?>
 <overlay id="findintabs-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-<script type="application/x-javascript" src="chrome://findintabs/content/findintabs.js" />
-  <broadcasterset>
-    <broadcaster id="isFindInTabs" status="false"/>
-  </broadcasterset>
-  
-  <vbox id="browser-bottombox"> 
-    <tree anonid="findintabs-results-list" id="findintabs-results-list" insertbefore="FindToolbar" hidden="true" rows="4"    onselect="_findintabs.selectresult(this.currentIndex);" >
-    <treecols>
-      <treecol label="Tab" flex="1"/>
-      <treecol label="Result" flex="10"/>
-    </treecols>
-    <treechildren>
-      <treeitem>
-        <treerow>
-          <treecell label="Tab #1"/>
-          <treecell label="SAMPLE RESULT"/>
-        </treerow>
-      </treeitem>
-      <treeitem>
-        <treerow>
-          <treecell label="Tab #6"/>
-          <treecell label="SAMPLE RESULT 2"/>
-        </treerow>
-      </treeitem>
-    </treechildren>
-  </tree>
-  </vbox>
+  <script type="application/x-javascript" src="chrome://findintabs/content/findintabs.js" />
+  <window id="main-window">
+    <splitter id="findintabs-splitter" insertbefore="browser-bottombox" hidden="true" resizeafter="flex"/>
+    <vbox id="browser-bottombox">
+      <vbox anonid="findintabs-results-box" id="findintabs-results-box" insertbefore="FindToolbar" hidden="true" persist="height" flex="1">
+        <label id="findintabs-results-label" value="Search Results:"/>
+        <tree anonid="findintabs-results-list" id="findintabs-results-list" rows="4"  hidecolumnpicker="true" onselect="findintabs.selectResult(this.currentIndex);" flex="1">
+          <treecols>
+            <treecol label="Tab Number" flex="1"/>
+            <treecol label="Tab Name" flex="1"/>
+            <treecol label="Result" flex="10"/>
+          </treecols>
+          <treechildren alternatingbackground="true">
+            <treeitem>
+              <treerow>
+                <treecell label="1"/>
+                <treecell label="BLA"/>
+                <treecell label="SAMPLE RESULT"/>
+              </treerow>
+            </treeitem>
+            <treeitem container="true">
+              <treerow>
+                <treecell label="2"/>
+                <treecell label="BLAH"/>
+                <treecell label="SAMPLE RESULT 2"/>
+              </treerow>
+            </treeitem>
+          </treechildren>
+        </tree>
+      </vbox>
+    </vbox>
+  </window>
 </overlay>
-  
