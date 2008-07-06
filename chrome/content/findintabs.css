@@ -6,9 +6,12 @@ findbar {
   margin-left: 2px;
   margin-right: 2px;
   height: 100px;
-  max-height: 350px;
+  min-height: 20px;
+  max-height: 350px !impportant;
 }
 
-#browser-bottombox {
+#findintabs-results-box {
+  height: 100px;
   max-height: 350px;
+  max-height: 350px !important;
 }
