@@ -20,6 +20,36 @@ var findintabs = {
       return gFindBar.open_old();  
     }
     
+    //overrride the find function!
+    gFindBar._find_old = gFindBar._find;
+    gFindBar._find = function(aValue) {
+      alert('HAHA OVERLOAD!');
+      return gFindBar._find_old(aValue);
+    }
+        
+/*    
+          var val = aValue || this._findField.value
+
+          this._enableFindButtons(val);
+          if (this.getElement("highlight").checked)
+            this._setHighlightTimeout();
+
+          this._updateCaseSensitivity(val);
+
+          var fastFind = this.browser.fastFind;
+          var res = fastFind.find(val, this._findMode == this.FIND_LINKS);
+          this._updateFoundLink(res);
+          this._updateStatusUI(res, false);
+
+          if (this._findMode != this.FIND_NORMAL)
+            this._setFindCloseTimeout();
+
+          return res;
+          
+          
+
+*/
+    
     
     
     this.initialized = true;
@@ -37,12 +67,11 @@ var findintabs = {
   selectResult: function(id) {
     
     gBrowser.mTabContainer.selectedIndex = id;
-  
+    
   }
   
   
 }
 
 window.addEventListener("load", findintabs.onLoad, false);
-
 
