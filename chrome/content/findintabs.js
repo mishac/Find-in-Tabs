@@ -30,8 +30,6 @@ var findintabs = {
         this.searchItem = aValue || this._findField.value;
         
 
-//          this._enableFindButtons(val);
-
         if (this.getElement("highlight").checked)
           this._setHighlightTimeout();
 
@@ -124,10 +122,22 @@ var findintabs = {
   
   },
   
-  selectResult: function(id) {
+  selectResult: function() {
+    var t = document.getElementById('findintabs-results-list');
+    var tabNum = gFindBar.resultsList[t.currentIndex].ownerTab;
+    var range =  gFindBar.resultsList[t.currentIndex].range;
+    var win =  gFindBar.resultsList[t.currentIndex].ownerWindow.wrappedJSObject;
     
-    gBrowser.mTabContainer.selectedIndex = id;
+    gBrowser.mTabContainer.selectedIndex = tabNum;
     
+    
+    //create a new HTML span node surrounding the range, then use its 'scrollintoview' function to move the page down.
+    var newNode = document.createElementNS("http://www.w3.org/1999/xhtml","html:span");
+
+    range.surroundContents(newNode);
+
+    newNode.scrollIntoView(true);
+
   }, 
   
   getFrames: function(aWinList, aFrame) {
@@ -136,11 +146,6 @@ var findintabs = {
       aWinList.push(aFrame);
     // in addition to finding the windows in this tab, we will clear any selections
 
-    //aFrame.focus();
-    //alert(aFrame);
-    //var sel = document.commandDispatcher.focusedWindow.getSelection();
-    
-    //alert(aFrame.parentNode);
     var sel = aFrame.getSelection();
     if (sel != null) {
       sel.removeAllRanges();
@@ -148,6 +153,7 @@ var findintabs = {
     for (var i = 0, j = frameList.length; i < j; i++) {
       this.getFrames(aWinList, frameList[i]);
     }
+
     return aWinList;
   },
   newRange: function(aStartElem, aStartOffset, aEndElem, aEndOffset) {
@@ -180,7 +186,7 @@ var findintabs = {
   populateList: function() { 
     
     findField = gFindBar._findField;     
-    findField.addEventListener('keypress', this.findFieldChanged, false);
+    findField.addEventListener('change', this.findFieldChanged, false);
     
     treechildren = document.getElementById('findintabs-results-list-children');
     
@@ -189,20 +195,25 @@ var findintabs = {
       newRow = document.createElement("treerow");
       treechildren.appendChild(newItem);
       newItem.appendChild(newRow);
-      
-      
+            
       cell1 =  document.createElement("treecell");
-      cell1.label = gFindBar.resultsList[i].ownerTab;
+      cell1.setAttribute("label", gFindBar.resultsList[i].ownerTab);
       
       cell2 =  document.createElement("treecell");
-      cell2.label = gFindBar.resultsList[i].ownerWindow;
+      tabTitle = gBrowser.getBrowserAtIndex(gFindBar.resultsList[i].ownerTab).contentDocument.wrappedJSObject.title;
+      cell2.setAttribute("label",tabTitle);
+      
       
       cell3 =  document.createElement("treecell");
-      cell3.label = gFindBar.resultsList[i].range;
+      rangeText = gFindBar.resultsList[i].range.commonAncestorContainer.wrappedJSObject.nodeValue;
+      
+      cell3.setAttribute("label", rangeText.toString());
       
       newRow.appendChild(cell1);
       newRow.appendChild(cell2);
       newRow.appendChild(cell3);
+      
+      
       
     }
   
@@ -212,7 +223,7 @@ var findintabs = {
     // if the user wants to do a new find, start with a clean slate again
     if (e.target.value != findintabs.searchItem) {
       findintabs.clearList();
-      //alert('rewr');
+
     }
   }
 }
