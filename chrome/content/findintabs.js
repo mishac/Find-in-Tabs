@@ -30,8 +30,12 @@ var findintabs = {
         this.searchItem = aValue || this._findField.value;
         
 
-        if (this.getElement("highlight").checked)
+        if (this.getElement("highlight").checked){
           this._setHighlightTimeout();
+          isHighlight = true;
+        } else {
+          isHighlight = false;
+        }
 
         this._updateCaseSensitivity(this.searchItem);
 
@@ -60,6 +64,14 @@ var findintabs = {
                                      .QueryInterface(Components.interfaces.nsIFind);
               finder.caseSensitive = this._shouldBeCaseSensitive(this.searchItem);
               while ((retRange = finder.Find(this.searchItem, searchRange, startPt, endPt))) {
+              
+                if (isHighlight) {
+                /* COMMENTEDF OUT FOR NOW --> I have no way to remove the highlighting after!
+                  var newNode = document.createElementNS("http://www.w3.org/1999/xhtml","html:span");
+                  newNode.setAttribute("style", "background-color:yellow; border: solid 1px red");
+                  newNode.setAttribute("class", "highlighted");
+                  retRange.surroundContents(newNode);*/
+                }
                 sel.addRange(retRange);
                 this.resultsList.push(new findintabs.result(retRange, frames[j], i));
                 startPt = document.createRange();
