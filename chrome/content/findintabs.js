@@ -72,6 +72,10 @@ var findInTabs = {
             
             for (j = 0; j < frames.length; ++j) {
               var body = frames[j].document.body;
+              
+              //dont search pages that dont have a document body
+              if (!body) continue;
+              
               var count = body.childNodes.length;
               var searchRange = findInTabs.newRange(body, 0, body, count);
               var startPt = findInTabs.newRange(body, 0, body, 0);
@@ -285,7 +289,7 @@ var findInTabs = {
       cell2.setAttribute("width", '150px');
       cell2.setAttribute("crop", 'end');
       
-      cell3.setAttribute("crop", 'center');
+      cell3.setAttribute("crop", 'end');
       
       var rangeSpan = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
       var beforeSpan = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
@@ -351,6 +355,8 @@ var findInTabs = {
     results = aDocument.getElementsByClassName("__mozilla-findbar-search");
 
     this.removeNodes(results);
+    
+    //aDocument.body.innerHTML.replace(/<span style="padding: 0pt; background-color: yellow; color: black; display: inline; font-size: inherit;" class="__mozilla-findbar-search">"(.+)<\/span>/, "$1");
   },
   removeScrollIntoView: function(doc) {
   
