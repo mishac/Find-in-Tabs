@@ -2,7 +2,7 @@ var findInTabs = {
   
   onLoad: function() {
     gFindBar.resultsList = new Array();
-    //gFindBar.searchItem = null;
+    gFindBar.searchItem = null;
     
     this.strings = document.getElementById('findintabs-strings');    
     this.isFindInTabs = false;
@@ -28,10 +28,15 @@ var findInTabs = {
     gFindBar._find = function(aValue) {
         //do it the new way
        if (findInTabs.isFindInTabs) {
-      
-        val= aValue || this._findField.value;
         
+        val = aValue || this._findField.value;
+        
+        if (val == this.searchItem)
+          return;
+          
 
+        this.searchItem = val;
+        
         if (this.getElement("highlight").checked){
           this._setHighlightTimeout();
           isHighlight = true;
@@ -52,9 +57,8 @@ var findInTabs = {
           for (i = 0; i < numTabs; ++i) {
             var frames = findInTabs.getFrames(new Array(), gBrowser.getBrowserAtIndex(i).contentWindow);
             
-            
             for (j = 0; j < frames.length; ++j) {
-              var sel = frames[j].getSelection(); // should be an empty selection
+              //var sel = frames[j].getSelection(); // should be an empty selection
               var body = frames[j].document.body;
               var count = body.childNodes.length;
               var searchRange = findInTabs.newRange(body, 0, body, count);
@@ -65,27 +69,18 @@ var findInTabs = {
                                      .createInstance()
                                      .QueryInterface(Components.interfaces.nsIFind);
               finder.caseSensitive = this._shouldBeCaseSensitive(val);
+
+
               while ((retRange = finder.Find(val, searchRange, startPt, endPt))) {
               
-               // if (isHighlight) {
-                  // COMMENTEDF OUT FOR NOW --> I have no way to remove the highlighting after!
-/*                  var newNode = document.createElementNS("http://www.w3.org/1999/xhtml","html:span");
-                  newNode.setAttribute("style", "background-color:yellow; border: solid 1px red");
-                  newNode.setAttribute("class", "findintabs-highlighted");
-                  retRange.surroundContents(newNode);
-              //  }
-              
-                //highlight
                 
-                
-                
-                sel.addRange(retRange);
+               // sel.addRange(retRange);
                 this.resultsList.push(new findInTabs.result(retRange, frames[j], i));
                 startPt = document.createRange();
                 startPt.setStart(retRange.endContainer, retRange.endOffset);
                 startPt.collapse(true);
               }
-              
+
               searchRange.detach();
               startPt.detach();
               endPt.detach();
@@ -97,9 +92,9 @@ var findInTabs = {
           // set findbar status
           var len = this.resultsList.length;
           
-          if (len)
+          if (len) {
             findInTabs.updateFindStatus(true);
-          else {
+          } else {
             this._findStatusIcon.setAttribute('status', 'notfound');
             this._findStatusDesc.textContent = this._notFoundStr;
             this._findField.setAttribute('status', 'notfound');
@@ -107,6 +102,7 @@ var findInTabs = {
           // populate the list, if our find yielded results
           if (len) {
             window.setTimeout(function() { findInTabs.populateList(); }, 0)
+            
           }
           else {
             findInTabs.clearList();
@@ -129,28 +125,13 @@ var findInTabs = {
     while (list.hasChildNodes()) {
       list.removeChild(list.lastChild);
     }
-    gFindBar.resultsList.length = 0;
     
     
     var numTabs = gBrowser.browsers.length;
     
     for (i = 0; i < numTabs; ++i) {
-      var doc = gBrowser.getBrowserAtIndex(i).contentDocument;
-      //this.removeHighlight(doc);
-    }
-    //newNode.setAttribute("class", "findintabs-highlighted");
-    
-    //gFindBar.searchItem = null;
-  
-  },
-  removeHighlight: function(doc) {
-  
-    var highlights = doc.getElementsByClassName("findintabs-highlighted");
-    
-    for (i = 0; i < highlights.length; i++) {
-       highlights[i].parentNode.removeChild(highlights[i]);
-
-      
+      var doc = gBrowser.getBrowserAtIndex(i).contentDocument.wrappedJSObject;
+      this.removeHighlight(doc);
     }
   
   },
@@ -159,6 +140,10 @@ var findInTabs = {
     document.getElementById('findintabs-results-box').hidden =  !this.isFindInTabs;
     document.getElementById('findintabs-splitter').hidden = !this.isFindInTabs;
   
+    if (aFindInTabs && gFindBar._findField.value) {
+      
+      gFindBar._find();
+    }
   },
   
   selectResult: function() {
@@ -224,28 +209,32 @@ var findInTabs = {
   },
   populateList: function() { 
     
-    findField = gFindBar._findField;     
-    findField.addEventListener('change', this.findFieldChanged, false);
+    findField = gFindBar._findField;
     
     treechildren = document.getElementById('findintabs-results-list-children');
     
     for (i = 0; i < gFindBar.resultsList.length; ++i) {
+    
+      findInTabs.highlight(gFindBar.resultsList[i].range);
+      
       newItem = document.createElement("treeitem");
       newRow = document.createElement("treerow");
       treechildren.appendChild(newItem);
       newItem.appendChild(newRow);
             
       cell1 =  document.createElement("treecell");
-      cell1.setAttribute("label", gFindBar.resultsList[i].ownerTab);
-      
+      cell1.setAttribute("label", gFindBar.resultsList[i].ownerTab + 1);
+            
       cell2 =  document.createElement("treecell");
       tabTitle = gBrowser.getBrowserAtIndex(gFindBar.resultsList[i].ownerTab).contentDocument.wrappedJSObject.title;
       cell2.setAttribute("label",tabTitle);
       
       
       cell3 =  document.createElement("treecell");
-      rangeText = gFindBar.resultsList[i].range.commonAncestorContainer.wrappedJSObject.nodeValue;
       
+      
+      rangeText = gFindBar.resultsList[i].range.commonAncestorContainer.wrappedJSObject.nodeValue;
+
       cell3.setAttribute("label", rangeText.toString());
       
       newRow.appendChild(cell1);
@@ -258,14 +247,84 @@ var findInTabs = {
   
   },
   
-  findFieldChanged: function(e) {
-    // if the user wants to do a new find, start with a clean slate again
-    //if (e.target.value != gFindBar.searchItem) {
-      //findInTabs.clearList();
+  highlight: function(aRange) {
+    
+    var baseNode = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
+    
+     //TODO: get the colors from the mozlla cs
+    baseNode.style.backgroundColor = 'yellow';
+    baseNode.style.color = 'black';
+    baseNode.style.display = "inline";
+    baseNode.style.fontSize = "inherit";
+    baseNode.style.padding = "0";
+    baseNode.className = "__mozilla-findbar-search";
 
-    //}
+
+    var startContainer = aRange.startContainer;
+    var startOffset = aRange.startOffset;
+    var endOffset = aRange.endOffset;
+    var docfrag = aRange.extractContents();
+    var before = startContainer.splitText(startOffset);
+    var parent = before.parentNode;
+    baseNode.appendChild(docfrag);
+    parent.insertBefore(baseNode, before);
+    return baseNode;
+
+  },
+  
+  removeHighlight: function(doc) {
+  
+    
+    results = doc.getElementsByClassName("__mozilla-findbar-search");
+    
+    for (i=0; i < results.length; i++) {
+        
+      var elem = results.item(i);
+      
+      
+      var child = null;
+      var docfrag = document.createDocumentFragment();
+      var  newChild = document.createTextNode(" Some text added dynamically. ");
+
+     docfrag.appendChild(newChild);
+
+      var next = elem.nextSibling;
+      var parent = elem.parentNode;
+/*      
+      elem.normalize();
+      /*
+      while ((child = elem.firstChild)) {
+
+        docfrag.appendChild(child);
+      
+      }
+      var children = elem.childNodes;
+      
+      for (j = 0; j < children.length; j++) {
+//        child = children.item(i);
+  //      newChild = document.createTextNode(" Some text added dynamically. ");
+
+    //    docfrag.appendChild(newChild);
+    
+    
+        
+      
+
+      
+      } 
+*/
+
+      parent.removeChild(elem);
+      parent.insertBefore(docfrag, next);
+      parent.normalize();
+  
+  
+      //elem.parent.removeChild(elem);    
+    
+    }
   }
+  
+  
 }
 
 window.addEventListener("load", findInTabs.onLoad, false);
-

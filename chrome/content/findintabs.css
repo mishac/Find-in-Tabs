@@ -1,5 +1,5 @@
 findbar {
-  -moz-binding: url('chrome://findintabs/content/findintabs.xml#findintabs');
+  -moz-binding: url('chrome://findintabs/content/findintabs.xml#findintabs') !important;
 }
 
 #findintabs-results-list {
