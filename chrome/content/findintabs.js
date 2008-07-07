@@ -2,9 +2,11 @@ var findInTabs = {
   
   onLoad: function() {
     gFindBar.resultsList = new Array();
+    //gFindBar.searchItem = null;
+    
     this.strings = document.getElementById('findintabs-strings');    
     this.isFindInTabs = false;
-    this.searchItem = null;
+    
         
     // overrride closeing of the findbar to close the results bar too
     gFindBar.close_old = gFindBar.close;
@@ -27,7 +29,7 @@ var findInTabs = {
         //do it the new way
        if (findInTabs.isFindInTabs) {
       
-        this.searchItem = aValue || this._findField.value;
+        val= aValue || this._findField.value;
         
 
         if (this.getElement("highlight").checked){
@@ -37,7 +39,7 @@ var findInTabs = {
           isHighlight = false;
         }
 
-        this._updateCaseSensitivity(this.searchItem);
+        this._updateCaseSensitivity(val);
 
 
         if (this._findMode != this.FIND_NORMAL)
@@ -62,16 +64,21 @@ var findInTabs = {
               var finder = Components.classes["@mozilla.org/embedcomp/rangefind;1"]
                                      .createInstance()
                                      .QueryInterface(Components.interfaces.nsIFind);
-              finder.caseSensitive = this._shouldBeCaseSensitive(this.searchItem);
-              while ((retRange = finder.Find(this.searchItem, searchRange, startPt, endPt))) {
+              finder.caseSensitive = this._shouldBeCaseSensitive(val);
+              while ((retRange = finder.Find(val, searchRange, startPt, endPt))) {
               
-                if (isHighlight) {
-                /* COMMENTEDF OUT FOR NOW --> I have no way to remove the highlighting after!
-                  var newNode = document.createElementNS("http://www.w3.org/1999/xhtml","html:span");
+               // if (isHighlight) {
+                  // COMMENTEDF OUT FOR NOW --> I have no way to remove the highlighting after!
+/*                  var newNode = document.createElementNS("http://www.w3.org/1999/xhtml","html:span");
                   newNode.setAttribute("style", "background-color:yellow; border: solid 1px red");
-                  newNode.setAttribute("class", "highlighted");
-                  retRange.surroundContents(newNode);*/
-                }
+                  newNode.setAttribute("class", "findintabs-highlighted");
+                  retRange.surroundContents(newNode);
+              //  }
+              
+                //highlight
+                
+                
+                
                 sel.addRange(retRange);
                 this.resultsList.push(new findInTabs.result(retRange, frames[j], i));
                 startPt = document.createRange();
@@ -123,10 +130,30 @@ var findInTabs = {
       list.removeChild(list.lastChild);
     }
     gFindBar.resultsList.length = 0;
-    this.searchItem = null;
+    
+    
+    var numTabs = gBrowser.browsers.length;
+    
+    for (i = 0; i < numTabs; ++i) {
+      var doc = gBrowser.getBrowserAtIndex(i).contentDocument;
+      //this.removeHighlight(doc);
+    }
+    //newNode.setAttribute("class", "findintabs-highlighted");
+    
+    //gFindBar.searchItem = null;
   
   },
+  removeHighlight: function(doc) {
   
+    var highlights = doc.getElementsByClassName("findintabs-highlighted");
+    
+    for (i = 0; i < highlights.length; i++) {
+       highlights[i].parentNode.removeChild(highlights[i]);
+
+      
+    }
+  
+  },
   toggleResultsList: function(aFindInTabs) {
     this.isFindInTabs = aFindInTabs;
     document.getElementById('findintabs-results-box').hidden =  !this.isFindInTabs;
@@ -233,10 +260,10 @@ var findInTabs = {
   
   findFieldChanged: function(e) {
     // if the user wants to do a new find, start with a clean slate again
-    if (e.target.value != findInTabs.searchItem) {
-      findInTabs.clearList();
+    //if (e.target.value != gFindBar.searchItem) {
+      //findInTabs.clearList();
 
-    }
+    //}
   }
 }
 
