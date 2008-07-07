@@ -11,8 +11,8 @@ var findInTabs = {
     // overrride closeing of the findbar to close the results bar too
     gFindBar.close_old = gFindBar.close;
     gFindBar.close = function() {
+      findInTabs.clearList();
       document.getElementById('findintabs-results-box').hidden = true;
-      findInTabs.removeHighlight();
       return gFindBar.close_old(); 
     }
     
@@ -51,8 +51,8 @@ var findInTabs = {
         
         val = aValue || this._findField.value;
         
-        if (val == this.searchItem)
-          return;
+    //    if (val == this.searchItem)
+      //    return;
           
 
         this.searchItem = val;
@@ -281,7 +281,7 @@ var findInTabs = {
       cell2.setAttribute("width", '150px');
       cell2.setAttribute("crop", 'end');
       
-      cell3.setAttribute("crop", 'end');
+      cell3.setAttribute("crop", 'center');
       
       var rangeSpan = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
       var beforeSpan = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
@@ -333,6 +333,7 @@ var findInTabs = {
     var endOffset = aRange.endOffset;
     var docfrag = aRange.extractContents();
     var before = startContainer.splitText(startOffset);
+       
     var parent = before.parentNode;
     baseNode.appendChild(docfrag);
     parent.insertBefore(baseNode, before);
@@ -340,10 +341,10 @@ var findInTabs = {
 
   },
   
-  removeHighlight: function(doc) {
+  removeHighlight: function(aDocument) {
   
     
-    results = doc.getElementsByClassName("__mozilla-findbar-search");
+    results = aDocument.getElementsByClassName("__mozilla-findbar-search");
 
     this.removeNodes(results);
   },
@@ -364,7 +365,7 @@ var findInTabs = {
 
       
       var parent = elem.parentNode;
-      
+      alert(typeof(parent));      
       
       while ((child = elem.firstChild)) {
         

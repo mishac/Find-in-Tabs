@@ -705,7 +705,6 @@
           var word = this._findField.value;
            
           if (findInTabs.isFindInTabs && word) {
-            
             this._find();
           }
           
