@@ -54,11 +54,10 @@ var findInTabs = {
           
           var numTabs = gBrowser.browsers.length;
           
-          for (i = 0; i < numTabs; ++i) {
+          for (i = 0; i < numTabs; i++) {
             var frames = findInTabs.getFrames(new Array(), gBrowser.getBrowserAtIndex(i).contentWindow);
             
             for (j = 0; j < frames.length; ++j) {
-              //var sel = frames[j].getSelection(); // should be an empty selection
               var body = frames[j].document.body;
               var count = body.childNodes.length;
               var searchRange = findInTabs.newRange(body, 0, body, count);
@@ -101,8 +100,8 @@ var findInTabs = {
           }
           // populate the list, if our find yielded results
           if (len) {
-            window.setTimeout(function() { findInTabs.populateList(); }, 0)
-            
+            //window.setTimeout(function() { findInTabs.populateList(); }, 0)
+            findInTabs.populateList();
           }
           else {
             findInTabs.clearList();
@@ -126,11 +125,14 @@ var findInTabs = {
       list.removeChild(list.lastChild);
     }
     
+    gFindBar.resultsList.length = 0;
     
     var numTabs = gBrowser.browsers.length;
     
-    for (i = 0; i < numTabs; ++i) {
-      var doc = gBrowser.getBrowserAtIndex(i).contentDocument.wrappedJSObject;
+    for (q = 0;q < numTabs; q++) {
+      
+      var doc = gBrowser.getBrowserAtIndex(q).contentDocument.wrappedJSObject;
+      
       this.removeHighlight(doc);
     }
   
@@ -148,20 +150,22 @@ var findInTabs = {
   
   selectResult: function() {
     var t = document.getElementById('findintabs-results-list');
+    if (!gFindBar.resultsList[t.currentIndex]) {
+      return;
+    }
+    
     var tabNum = gFindBar.resultsList[t.currentIndex].ownerTab;
     var range =  gFindBar.resultsList[t.currentIndex].range;
     var win =  gFindBar.resultsList[t.currentIndex].ownerWindow.wrappedJSObject;
     
     gBrowser.mTabContainer.selectedIndex = tabNum;
+
+    node = range.startContainer.wrappedJSObject.parentNode; 
     
+    node.scrollIntoView(true);
     
-    //create a new HTML span node surrounding the range, then use its 'scrollintoview' function to move the page down.
-    var newNode = document.createElementNS("http://www.w3.org/1999/xhtml","html:span");
-
-    range.surroundContents(newNode);
-
-    newNode.scrollIntoView(true);
-
+    this.removeScrollIntoView(node);
+    
   }, 
   
   getFrames: function(aWinList, aFrame) {
@@ -213,8 +217,8 @@ var findInTabs = {
     
     treechildren = document.getElementById('findintabs-results-list-children');
     
-    for (i = 0; i < gFindBar.resultsList.length; ++i) {
-    
+    for (i = 0; i < gFindBar.resultsList.length; i++) {
+      
       findInTabs.highlight(gFindBar.resultsList[i].range);
       
       newItem = document.createElement("treeitem");
@@ -276,54 +280,40 @@ var findInTabs = {
   
     
     results = doc.getElementsByClassName("__mozilla-findbar-search");
+
+    this.removeNodes(results);
+  },
+  removeScrollIntoView: function(doc) {
+  
     
-    for (i=0; i < results.length; i++) {
-        
-      var elem = results.item(i);
-      
-      
-      var child = null;
-      var docfrag = document.createDocumentFragment();
-      var  newChild = document.createTextNode(" Some text added dynamically. ");
+    results = doc.getElementsByClassName("__mozilla-findintabs-scrolltoview");
+    this.removeNodes(results);
+  },
+  
+  removeNodes: function(aNodeList) {
+  
+    len = aNodeList.length;
+    
+    for (i = 0; i < len; i++) {
+       
+      var elem = aNodeList.item(len - i - 1);
 
-     docfrag.appendChild(newChild);
-
-      var next = elem.nextSibling;
+      
       var parent = elem.parentNode;
-/*      
-      elem.normalize();
-      /*
+      
+      
       while ((child = elem.firstChild)) {
-
-        docfrag.appendChild(child);
-      
-      }
-      var children = elem.childNodes;
-      
-      for (j = 0; j < children.length; j++) {
-//        child = children.item(i);
-  //      newChild = document.createTextNode(" Some text added dynamically. ");
-
-    //    docfrag.appendChild(newChild);
-    
-    
         
-      
+        parent.insertBefore(child, elem);
+        
 
-      
-      } 
-*/
-
+      }
       parent.removeChild(elem);
-      parent.insertBefore(docfrag, next);
+
       parent.normalize();
-  
-  
-      //elem.parent.removeChild(elem);    
-    
     }
-  }
   
+  }
   
 }
 
