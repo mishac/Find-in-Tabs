@@ -184,9 +184,15 @@ var findInTabs = {
     node = range.startContainer.wrappedJSObject.parentNode; 
     
     node.scrollIntoView(true);
-    
-    //this.removeScrollIntoView(node);
-    
+  /*  
+    var baseNode = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
+    baseNode.style.border = 'red 2px solid';
+    baseNode.style.padding = "2px";
+    baseNode.className = "__mozilla-findintabs-selected";
+
+    range.surroundContents(node);    
+   //this.removeScrollIntoView(node);
+    */
     t.focus();
   }, 
   
@@ -351,7 +357,7 @@ var findInTabs = {
   removeScrollIntoView: function(doc) {
   
     
-    results = doc.getElementsByClassName("__mozilla-findintabs-scrolltoview");
+    results = doc.getElementsByClassName("__mozilla-findintabs-selected");
     this.removeNodes(results);
   },
   
