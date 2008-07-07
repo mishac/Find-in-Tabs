@@ -87,7 +87,7 @@ var findInTabs = {
               
                 
                // sel.addRange(retRange);
-                this.resultsList.push(new findInTabs.result(retRange, frames[j], i));
+                this.resultsList.push(new findInTabs.result(retRange, i));
                 startPt = document.createRange();
                 startPt.setStart(retRange.endContainer, retRange.endOffset);
                 startPt.collapse(true);
@@ -138,7 +138,7 @@ var findInTabs = {
     
     for (q = 0;q < numTabs; q++) {
       
-      var doc = gBrowser.getBrowserAtIndex(q).contentDocument.wrappedJSObject;
+      var doc = gBrowser.getBrowserAtIndex(q).contentDocument;
       
       this.removeHighlight(doc);
     }
@@ -177,11 +177,10 @@ var findInTabs = {
     
     var tabNum = gFindBar.resultsList[t.currentIndex].ownerTab;
     var range =  gFindBar.resultsList[t.currentIndex].range;
-    var win =  gFindBar.resultsList[t.currentIndex].ownerWindow.wrappedJSObject;
     
     gBrowser.mTabContainer.selectedIndex = tabNum;
 
-    node = range.startContainer.wrappedJSObject.parentNode; 
+    node = range.startContainer.parentNode; 
     
     node.scrollIntoView(true);
   /*  
@@ -218,9 +217,8 @@ var findInTabs = {
     range.setEnd(aEndElem, aEndOffset);
     return range;
   },
-  result: function(aRange, aFrame, aTab) {
+  result: function(aRange, aTab) {
     this.range = aRange;
-    this.ownerWindow = aFrame;
     this.ownerTab = aTab;
   },
   updateFindStatus: function(aStatusFlag) {
@@ -261,7 +259,7 @@ var findInTabs = {
       
       var listItem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "richlistitem");
       var tabNum = gFindBar.resultsList[i].ownerTab + 1;
-      var tabTitle = gBrowser.getBrowserAtIndex(gFindBar.resultsList[i].ownerTab).contentDocument.wrappedJSObject.title;
+      var tabTitle = gBrowser.getBrowserAtIndex(gFindBar.resultsList[i].ownerTab).contentDocument.title;
       
       //getting range text and some text before and after
       var range = gFindBar.resultsList[i].range;
