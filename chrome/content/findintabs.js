@@ -364,8 +364,7 @@ var findInTabs = {
       var elem = aNodeList.item(len - i - 1);
 
       
-      var parent = elem.parentNode;
-      alert(typeof(parent));      
+      var parent = elem.parentNode;      
       
       while ((child = elem.firstChild)) {
         
