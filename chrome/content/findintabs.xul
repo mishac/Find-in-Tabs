@@ -9,7 +9,7 @@
   <window id="main-window">
       <vbox anonid="findintabs-results-box" id="findintabs-results-box" insertbefore="browser-bottombox" hidden="true">
         <label id="findintabs-results-label" value="Search Results:"/>
-        <tree anonid="findintabs-results-list" id="findintabs-results-list" rows="4"  hidecolumnpicker="true" onselect="findInTabs.selectResult();"  enableColumnDrag="true">
+        <!--<tree anonid="findintabs-results-list" id="findintabs-results-list" rows="4"  hidecolumnpicker="true" onselect="findInTabs.selectResult();"  enableColumnDrag="true">
           <treecols>
             <treecol fixed="false" sortActive="true" label="Tab Number" />
             <treecol fixed="false" label="Tab Name" flex="1"/>
@@ -17,7 +17,10 @@
           </treecols>
           <treechildren id="findintabs-results-list-children" />
 
-        </tree>
+        </tree>-->
+        
+        <richlistbox anonid="findintabs-results-list" id="findintabs-results-list" rows="6"  onselect="findInTabs.selectResult();" /> 
+
       </vbox>
     
   </window>
