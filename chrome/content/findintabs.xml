@@ -250,13 +250,14 @@
                          disabled="true"
                          xbl:inherits="accesskey=highlightaccesskey"/>
                          
-      <xul:checkbox comment="TODO:DTD"
-                    anonid="find-findintabs-check"
+      <xul:toolbarbutton comment="TODO:DTD"
+                    anonid="find-findintabs-check tabbable"
                     id="find-findintabs-check"
                     oncommand="_setFindInTabs(this.checked);"
                     label="Find in Tabs"
                     accesskey="t"
-                    xbl:inherits="accesskey=matchcaseaccesskey" />            
+                    type="checkbox"
+                    xbl:inherits="accesskey=findintabsaccesskey" />            
                     
                     
       <xul:checkbox anonid="find-case-sensitive"
@@ -453,12 +454,14 @@
         <parameter name="aHighlight"/>
         <body><![CDATA[
           var word = this._findField.value;
-          if (aHighlight) {
+          
+          
+         if (aHighlight) {
             // We have to update the status because we might still have the status
             // of another tab
             if (this._highlightDoc("yellow", "black", word))
               this._updateStatusUI(this.nsITypeAheadFind.FIND_FOUND);
-            else
+            else  
               this._updateStatusUI(this.nsITypeAheadFind.FIND_NOTFOUND);
           }
           else {
@@ -697,6 +700,15 @@
           // Just set the pref; our observer will change the find bar behavior
           prefsvc.setIntPref("accessibility.typeaheadfind.casesensitive",
                              aCaseSensitive ? 1 : 0);
+          //FINDINTABS
+          //toggling case sensitivity should make it refind 
+          var word = this._findField.value;
+           
+          if (findInTabs.isFindInTabs && word) {
+            
+            this._find();
+          }
+          
         ]]></body>
 
       </method>
