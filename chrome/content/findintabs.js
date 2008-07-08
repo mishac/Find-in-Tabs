@@ -54,18 +54,13 @@ var findInTabs = {
       gFindBar.getElement("highlight").disabled = true;
       this.statusLabel.value = this.strings.getFormattedString("findInTabsStatus", []);
       this.statusLabel.hidden = gFindBar._findMode == gFindBar.FIND_NORMAL;
-      if(gFindBar._findField.value)
-        gFindBar._find();
     } else {
       this.clearList();
       this.statusLabel.value = "";
-      if(gFindBar._findField.value) {
-        gFindBar.getElement("highlight").disabled = false;
-        gFindBar.getElement("find-previous").disabled = false;
-        gFindBar.getElement("find-next").disabled = false;
-      }
+      
     }
-    
+    if (gFindBar._findField.value)
+      gFindBar._find();
   },
   
   onSelectItem: function _selectItem() {
@@ -370,7 +365,6 @@ var findBarOverLoad = {
             endPt.detach();
           } 
         }
-          
         // set findbar status
         if (findInTabs.searchResults.length) {
           findInTabs.populateList();
