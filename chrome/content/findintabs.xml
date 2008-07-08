@@ -47,6 +47,8 @@
 %findBarDTD;
 <!ENTITY % globalDTD SYSTEM "chrome://global/locale/global.dtd">
 %globalDTD;
+<!ENTITY % findInTabsDTD SYSTEM "chrome://findintabs/locale/findintabs.dtd">
+%globalDTD;
 ]>
 
 <bindings id="findbarBindings"
@@ -205,7 +207,7 @@
            extends="chrome://global/content/bindings/toolbar.xml#toolbar">
     <resources>
       <stylesheet src="chrome://global/skin/findBar.css"/>
-      <stylesheet src="chrome://findintabs/content/findintabs.css"/>
+      <stylesheet src="chrome://findintabs/skin/findintabs.css"/>
     </resources>
 
     <content hidden="true">

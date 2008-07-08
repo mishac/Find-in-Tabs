@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<?xml-stylesheet href="chrome://findintabs/content/findintabs.css" type="text/css"?>
+<?xml-stylesheet href="chrome://findintabs/skin/findintabs.css" type="text/css"?>
 <overlay id="findintabs-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="application/x-javascript" src="chrome://findintabs/content/findintabs.js" />
   <stringbundleset id="stringbundleset">
-    <stringbundle id="findintabs-strings" src="chrome://findintabs/content/findintabs.properties"/>
+    <stringbundle id="findintabs-strings" src="chrome://findintabs/locale/findintabs.properties"/>
   </stringbundleset>
 
   <window id="main-window">
