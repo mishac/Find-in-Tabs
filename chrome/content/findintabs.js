@@ -3,7 +3,6 @@ var findInTabs = {
   onLoad: function _onLoad() {
     this.MAX_RESULTS = 200;
     this.HIGHLIGHT_CLASS = "__mozilla-findbar-search";
-    this.IGNORE_NODES = ['i', 'b', 'em', 'strong', 'a']
     
     this.searchItem = null;
     this.searchResults = [];
@@ -150,8 +149,6 @@ var findInTabs = {
       
       listItem.setAttribute("class", 'findintabs-results-list-item');
       listItem.setAttribute("context", 'findintabs-context-menu');
-      //listItem.addEventListener("click", this.clickItem, false);
-
       
       var tabNum = item.ownerTab + 1;
       var tabTitle = gBrowser.getBrowserAtIndex(item.ownerTab).contentDocument.title;
@@ -257,7 +254,9 @@ var findInTabs = {
       
       var text = this.resultsList.getSelectedItem(0).textContent;
       
-      alert(text);
+      const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
+                               getService(Components.interfaces.nsIClipboardHelper);
+      gClipboardHelper.copyString(text);
       
   }
 }
@@ -306,9 +305,9 @@ var findBarOverLoad = {
       if (findInTabs.isFindInTabs) {
         val = aValue || this._findField.value;
         
-    /*    if (val == this.searchItem)
+        if (val == this.searchItem)
               return;
-          */
+          
 
         findInTabs.searchItem = val;
         this._updateCaseSensitivity(val);
