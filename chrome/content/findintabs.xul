@@ -5,11 +5,16 @@
   <stringbundleset id="stringbundleset">
     <stringbundle id="findintabs-strings" src="chrome://findintabs/locale/findintabs.properties"/>
   </stringbundleset>
+  <popupset>
+    <menupopup id="findintabs-context-menu">
+      <menuitem label="Copy text" accesskey="c" oncommand="findInTabs.copyText()" />
+    </menupopup>
+  </popupset>
 
   <window id="main-window">
       <vbox anonid="findintabs-results-box" id="findintabs-results-box" insertbefore="browser-bottombox" hidden="true">
         <label id="findintabs-results-label" value="Search Results:"/>
-        <richlistbox anonid="findintabs-results-list" id="findintabs-results-list" rows="6"  onselect="findInTabs.selectItem();" /> 
+        <richlistbox anonid="findintabs-results-list" id="findintabs-results-list" rows="6"  onselect="findInTabs.selectItem();" />
 
       </vbox>
     

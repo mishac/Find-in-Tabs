@@ -3,6 +3,7 @@ var findInTabs = {
   onLoad: function _onLoad() {
     this.MAX_RESULTS = 200;
     this.HIGHLIGHT_CLASS = "__mozilla-findbar-search";
+    this.IGNORE_NODES = ['i', 'b', 'em', 'strong', 'a']
     
     this.searchItem = null;
     this.searchResults = [];
@@ -138,39 +139,52 @@ var findInTabs = {
       findNext.disabled = true;
     }
   },
+  
   populateList: function _populateList () { 
     findField = gFindBar._findField;
     list = document.getElementById('findintabs-results-list');
     
     for (var i = 0; item = this.searchResults[i]; i++) {
-      var listItem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "richlistitem");
+      var listItem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", 
+        "richlistitem");
+      
+      listItem.setAttribute("class", 'findintabs-results-list-item');
+      listItem.setAttribute("context", 'findintabs-context-menu');
+      //listItem.addEventListener("click", this.clickItem, false);
+
+      
       var tabNum = item.ownerTab + 1;
       var tabTitle = gBrowser.getBrowserAtIndex(item.ownerTab).contentDocument.title;
       
       //getting range text and some text before and after
       var range = item.range;
       var rangeText = range.toString();
-      var beforeText = range.startContainer.textContent.substring(0, range.startOffset);
+      var startContainer = range.startContainer;
+      var endContainer = range.endContainer;
+      
+      var beforeText = startContainer.textContent.substring(0, range.startOffset);
       if (beforeText.length > 80)
         beforeText = beforeText.substr(beforeText.length - 80, 80);
-      var afterText = range.endContainer.textContent.substring(range.endOffset);
+      
+      var afterText = endContainer.textContent.substring(range.endOffset);
       if (afterText.length > 80)
         afterText = afterText.substr(0, 80);
 
       var hbox = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "hbox");
 
       var cell1 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "label");
+      cell1.setAttribute("class", 'findintabs-results-list-tabnumber');
       cell1.setAttribute("value", 'Tab #' + tabNum);
-      cell1.setAttribute("width", '40px');
       
       var cell2 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "label");
+      cell2.setAttribute("class", 'findintabs-results-list-tabtitle');
       cell2.setAttribute("value", tabTitle);
-      cell2.setAttribute("width", '150px');
       cell2.setAttribute("crop", 'end');
       
       var cell3 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "description");
       cell3.setAttribute("crop", 'end');
-
+      cell3.setAttribute("class", 'findintabs-results-list-text');
+      
       var rangeSpan = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
       var beforeSpan = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
       var afterSpan = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
@@ -236,6 +250,15 @@ var findInTabs = {
       parent.removeChild(elem);
       parent.normalize();
     }
+  },
+  
+  copyText: function _copyText() {
+      var range = this.searchResults[this.resultsList.currentIndex];
+      
+      var text = this.resultsList.getSelectedItem(0).textContent;
+      
+      alert(text);
+      
   }
 }
 
