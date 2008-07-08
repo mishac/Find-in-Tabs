@@ -8,9 +8,14 @@ var findInTabs = {
     this.searchResults = [];
     
     //useful elements   
-    this.strings = document.getElementById('findintabs-strings');
-    this.resultsBox =  document.getElementById('findintabs-results-box');
-    this.resultsList = document.getElementById('findintabs-results-list');
+    this.strings = document.getElementById("findintabs-strings");
+    this.checkbox = document.getElementById("findbar-findintabs-check");
+    this.resultsBox =  document.getElementById("findintabs-results-box");
+    this.resultsList = document.getElementById("findintabs-results-list");
+    this.statusLabel = gFindBar.getElement("match-findintabs-status");
+    
+    this.resultsBox.addEventListener("keypress", this.onKeyPress, false);
+    
     
     //register the style sheet
     var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
@@ -20,7 +25,7 @@ var findInTabs = {
     var uri = ios.newURI("chrome://findintabs/skin/findintabs-page.css", null, null);
     if(!sss.sheetRegistered(uri, sss.USER_SHEET))
       sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
-
+   
     this.isFindInTabs = false
     this.initialized = true;
   },
@@ -44,23 +49,26 @@ var findInTabs = {
     this.isFindInTabs = aFindInTabs;
     this.resultsBox.hidden =  !this.isFindInTabs;
     
-    if (aFindInTabs) {
+    if (this.isFindInTabs) {
+      gFindBar.getElement("highlight").checked = false;
       gFindBar.getElement("highlight").disabled = true;
+      this.statusLabel.value = this.strings.getFormattedString("findInTabsStatus", []);
+      this.statusLabel.hidden = gFindBar._findMode == gFindBar.FIND_NORMAL;
       if(gFindBar._findField.value)
         gFindBar._find();
-      
     } else {
       this.clearList();
-     
+      this.statusLabel.value = "";
       if(gFindBar._findField.value) {
         gFindBar.getElement("highlight").disabled = false;
         gFindBar.getElement("find-previous").disabled = false;
         gFindBar.getElement("find-next").disabled = false;
       }
     }
+    
   },
   
-  selectItem: function _selectItem() {
+  onSelectItem: function _selectItem() {
     var list = this.resultsList;
     if (!this.searchResults[list.currentIndex])
       return;
@@ -70,7 +78,7 @@ var findInTabs = {
     
     gBrowser.mTabContainer.selectedIndex = tabNum;
     
-    var node = range.commonAncestorContainer.parentNode;
+    var node = range.startContainer.parentNode;
     node.scrollIntoView(true);
     
     list.focus();
@@ -114,25 +122,25 @@ var findInTabs = {
     var len = this.searchResults.length;
     
     if (aStatusFlag) {
-      statusIcon.setAttribute('status', 'findintabs-results');
+      statusIcon.setAttribute("status", "findintabs-results");
       
-      if (len == 1) {
-        statusText.textContent = this.strings.getFormattedString('findOneResultStatusMessage', [len]);
+      if (len == 1) { 
+        statusText.textContent = this.strings.getFormattedString("findOneResultStatusMessage", [len]);
       }
       else if (len > this.MAX_RESULTS) {
-         statusText.textContent = this.strings.getFormattedString('findResultsTooMany', [this.MAX_RESULTS]);
+         statusText.textContent = this.strings.getFormattedString("findResultsTooMany", [this.MAX_RESULTS]);
       }
       else {
-        statusText.textContent = this.strings.getFormattedString('findResultStatusMessage', [len]);  
+        statusText.textContent = this.strings.getFormattedString("findResultStatusMessage", [len]);  
       }
       
-      findField.removeAttribute('status');
+      findField.removeAttribute("status");
       findPrev.disabled = false;
       findNext.disabled = false;
     }
-    else if (statusIcon.getAttribute('status') == 'findintabs-results') {
-      statusText.textContent = '';
-      statusIcon.removeAttribute('status');
+    else if (statusIcon.getAttribute("status") == "findintabs-results") {
+      statusText.textContent = "";
+      statusIcon.removeAttribute("status");
       findField.setAttribute("status", "notfound");    
       findPrev.disabled = true;
       findNext.disabled = true;
@@ -141,14 +149,14 @@ var findInTabs = {
   
   populateList: function _populateList () { 
     findField = gFindBar._findField;
-    list = document.getElementById('findintabs-results-list');
+    list = document.getElementById("findintabs-results-list");
     
     for (var i = 0; item = this.searchResults[i]; i++) {
       var listItem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", 
         "richlistitem");
       
-      listItem.setAttribute("class", 'findintabs-results-list-item');
-      listItem.setAttribute("context", 'findintabs-context-menu');
+      listItem.setAttribute("class", "findintabs-results-list-item");
+      listItem.setAttribute("context", "findintabs-context-menu");
       
       var tabNum = item.ownerTab + 1;
       var tabTitle = gBrowser.getBrowserAtIndex(item.ownerTab).contentDocument.title;
@@ -170,23 +178,23 @@ var findInTabs = {
       var hbox = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "hbox");
 
       var cell1 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "label");
-      cell1.setAttribute("class", 'findintabs-results-list-tabnumber');
-      cell1.setAttribute("value", 'Tab #' + tabNum);
+      cell1.setAttribute("class", "findintabs-results-list-tabnumber");
+      cell1.setAttribute("value", "Tab #" + tabNum);
       
       var cell2 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "label");
-      cell2.setAttribute("class", 'findintabs-results-list-tabtitle');
+      cell2.setAttribute("class", "findintabs-results-list-tabtitle");
       cell2.setAttribute("value", tabTitle);
-      cell2.setAttribute("crop", 'end');
+      cell2.setAttribute("crop", "end");
       
       var cell3 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "description");
-      cell3.setAttribute("crop", 'end');
-      cell3.setAttribute("class", 'findintabs-results-list-text');
+      cell3.setAttribute("crop", "end");
+      cell3.setAttribute("class", "findintabs-results-list-text");
       
       var rangeSpan = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
       var beforeSpan = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
       var afterSpan = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
 
-      rangeSpan.style.backgroundColor = 'yellow';
+      rangeSpan.style.backgroundColor = "yellow";
 
       var rangeSpanText = document.createTextNode(rangeText);
       var beforeSpanText = document.createTextNode(beforeText);
@@ -214,7 +222,6 @@ var findInTabs = {
   highlight: function _highlight(aRange) {
     var baseNode = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
     baseNode.className = this.HIGHLIGHT_CLASS;
-
     var startContainer = aRange.startContainer;
     var startOffset = aRange.startOffset;
     var endOffset = aRange.endOffset;
@@ -250,14 +257,19 @@ var findInTabs = {
   },
   
   copyText: function _copyText() {
-      var range = this.searchResults[this.resultsList.currentIndex];
-      
-      var text = this.resultsList.getSelectedItem(0).textContent;
-      
-      const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
-                               getService(Components.interfaces.nsIClipboardHelper);
-      gClipboardHelper.copyString(text);
-      
+    var range = this.searchResults[this.resultsList.currentIndex];
+    
+    var text = this.resultsList.getSelectedItem(0).textContent;
+    
+    const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
+                             getService(Components.interfaces.nsIClipboardHelper);
+    gClipboardHelper.copyString(text);
+    
+  },
+  
+  onKeyPress: function _onKeyPress(aEvent) {
+    if(aEvent.keyCode == aEvent.DOM_VK_ESCAPE)
+      gFindBar.close();
   }
 }
 
@@ -273,11 +285,15 @@ var findBarOverLoad = {
       return gFindBar.close_old(); 
     }
     
-    // override opening of the findbar to open the results bar too if it's set
+    // override opening of the findbar to open the results bar too if it"s set
     gFindBar.open_old = gFindBar.open;
-    gFindBar.open = function _newOpen() {
+     gFindBar.open = function _newOpen(aMode) {
+      
+      retVal = gFindBar.open_old(aMode);
+      
       findInTabs.toggleResultsList(findInTabs.isFindInTabs);
-      return gFindBar.open_old();  
+      
+      return retVal;  
     }
     
     //overload the next/prev buttons functions
@@ -342,9 +358,7 @@ var findBarOverLoad = {
             while ((retRange = finder.Find(val, searchRange, startPt, endPt)) 
               && (findInTabs.searchResults.length <= findInTabs.MAX_RESULTS)) {
               
-              findInTabs.searchResults.push(new findInTabs.result(retRange, i));
-              
-              startPt.detach();        
+              findInTabs.searchResults.push(new findInTabs.result(retRange, i));        
               startPt = document.createRange();
               startPt.setStart(retRange.endContainer, retRange.endOffset);
               startPt.collapse(true);
@@ -362,9 +376,9 @@ var findBarOverLoad = {
           findInTabs.populateList();
           findInTabs.updateFindStatus(true);
         } else {
-          this._findStatusIcon.setAttribute('status', 'notfound');
+          this._findStatusIcon.setAttribute("status", "notfound");
           this._findStatusDesc.textContent = this._notFoundStr;
-          this._findField.setAttribute('status', 'notfound');
+          this._findField.setAttribute("status", "notfound");
           findInTabs.clearList();
         }
       } else {

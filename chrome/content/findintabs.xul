@@ -10,13 +10,11 @@
       <menuitem label="Copy text" accesskey="c" oncommand="findInTabs.copyText()" />
     </menupopup>
   </popupset>
-
   <window id="main-window">
       <vbox anonid="findintabs-results-box" id="findintabs-results-box" insertbefore="browser-bottombox" hidden="true">
         <label id="findintabs-results-label" value="Search Results:"/>
-        <richlistbox anonid="findintabs-results-list" id="findintabs-results-list" rows="6"  onselect="findInTabs.selectItem();" />
-
-      </vbox>
-    
+        <richlistbox anonid="findintabs-results-list" id="findintabs-results-list" rows="6"  
+          onselect="findInTabs.onSelectItem();" />
+      </vbox>    
   </window>
 </overlay>

@@ -48,7 +48,7 @@
 <!ENTITY % globalDTD SYSTEM "chrome://global/locale/global.dtd">
 %globalDTD;
 <!ENTITY % findInTabsDTD SYSTEM "chrome://findintabs/locale/findintabs.dtd">
-%globalDTD;
+%findInTabsDTD;
 ]>
 
 <bindings id="findbarBindings"
@@ -251,24 +251,22 @@
                          type="checkbox"
                          disabled="true"
                          xbl:inherits="accesskey=highlightaccesskey"/>
-                         
       <xul:toolbarbutton comment="TODO:DTD"
-                    anonid="find-findintabs-check tabbable"
-                    id="find-findintabs-check"
+                    anonid="findbar-findintabs-check tabbable"
+                    id="findbar-findintabs-check"
                     oncommand="_setFindInTabs(this.checked);"
                     label="Find in Tabs"
                     accesskey="t"
                     type="checkbox"
                     xbl:inherits="accesskey=findintabsaccesskey" />            
-                    
-                    
       <xul:checkbox anonid="find-case-sensitive"
                     oncommand="_setCaseSensitivity(this.checked);"
                     label="&caseSensitiveCheckbox.label;"
                     accesskey="&caseSensitiveCheckbox.accesskey;"
                     xbl:inherits="accesskey=matchcaseaccesskey"/>
 
-      <xul:label anonid="match-case-status" class="findbar-find-fast"/>
+      <xul:label anonid="match-case-status" class="findbar-find-fast" />
+      <xul:label anonid="match-findintabs-status" class="findbar-find-fast"/>
       <xul:image anonid="find-status-icon" class="findbar-find-fast find-status-icon"/>
       <xul:description anonid="find-status" class="findbar-find-fast findbar-find-status"
                        control="findbar-textbox">
@@ -1136,7 +1134,9 @@
           var showMinimalUI = this._findMode != this.FIND_NORMAL;
 
           var nodes = this.getElement("findbar-container").childNodes;
+          
           for (var i = 0; i < nodes.length; i++) {
+
             if (nodes[i].className.indexOf("findbar-find-fast") != -1)
                continue;
 
