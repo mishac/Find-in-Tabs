@@ -2,6 +2,8 @@ var findInTabs = {
 
   onLoad: function() {
     
+    this.MAX_RESULTS = 200;
+    
     this.searchItem = null;
     this.searchResults = [];
     
@@ -19,11 +21,10 @@ var findInTabs = {
     if(!sss.sheetRegistered(uri, sss.USER_SHEET))
       sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
 
-    
-    
     this.isFindInTabs = false
     this.initialized = true;
   },
+  
   clearList: function() {
     // remove list children and zero out the results array, etc.
     while (this.resultsList.hasChildNodes()) {
@@ -34,9 +35,9 @@ var findInTabs = {
     
     var numTabs = gBrowser.browsers.length;
     
-    for (var q = 0;q < numTabs; q++) {
+    for (var i = 0;i < numTabs; i++) {
       
-      var doc = gBrowser.getBrowserAtIndex(q).contentDocument;
+      var doc = gBrowser.getBrowserAtIndex(i).contentDocument;
       
       this.removeHighlight(doc);
     }
@@ -81,10 +82,9 @@ var findInTabs = {
     
     gBrowser.mTabContainer.selectedIndex = tabNum;
 
-    var node = range.startContainer.parentNode; 
+    var node = range.commonAncestorContainer.parentNode;
     
     node.scrollIntoView(true);
-    
        
     list.focus();
   }, 
@@ -116,7 +116,6 @@ var findInTabs = {
   
   updateFindStatus: function(aStatusFlag) {
     // aStatusFlag (boolean)  True means show number of find results in the findbar status, false means clear it
-    //findBar = document.getElementById('FindToolbar');
     var statusIcon = gFindBar._findStatusIcon;
     var statusText = gFindBar._findStatusDesc;
     var findField = gFindBar._findField;
@@ -157,12 +156,18 @@ var findInTabs = {
       var tabTitle = gBrowser.getBrowserAtIndex(this.searchResults[i].ownerTab).contentDocument.title;
       
       //getting range text and some text before and after
-      var range =this.searchResults[i].range;
+      var range = this.searchResults[i].range;
       
       var rangeText = range.toString();
             
       var beforeText = range.startContainer.textContent.substring(0, range.startOffset);
+      if (beforeText.length > 80)
+        beforeText = beforeText.substr(beforeText.length - 80, 80);
+
       var afterText = range.endContainer.textContent.substring(range.endOffset);
+      
+      if (afterText.length > 80)
+        afterText = afterText.substr(0, 80);
       
       var hbox = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "hbox");
       
@@ -197,7 +202,6 @@ var findInTabs = {
             
       afterSpan.appendChild(afterSpanText);
       cell3.appendChild(afterSpan); 
-      
       
       hbox.appendChild(cell1);
       hbox.appendChild(cell2);
@@ -341,9 +345,11 @@ var findBarOverLoad = {
             finder.caseSensitive = this._shouldBeCaseSensitive(val);
 
 
-            while ((retRange = finder.Find(val, searchRange, startPt, endPt))) {
-            
+            while ((retRange = finder.Find(val, searchRange, startPt, endPt)) 
+              && (findInTabs.searchResults.length < findInTabs.MAX_RESULTS)) {
+              
               findInTabs.searchResults.push(new findInTabs.result(retRange, i));
+              
               startPt = document.createRange();
               startPt.setStart(retRange.endContainer, retRange.endOffset);
               startPt.collapse(true);
