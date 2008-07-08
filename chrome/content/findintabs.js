@@ -1,12 +1,26 @@
 var findInTabs = {
 
   onLoad: function() {
+    
     this.searchItem = null;
-    this.searchResults = null;
     this.searchResults = [];
+    
+    //useful elements   
     this.strings = document.getElementById('findintabs-strings');
     this.resultsBox =  document.getElementById('findintabs-results-box');
     this.resultsList = document.getElementById('findintabs-results-list');
+    
+    //register the style sheet
+    var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
+                    .getService(Components.interfaces.nsIStyleSheetService);
+    var ios = Components.classes["@mozilla.org/network/io-service;1"]
+                    .getService(Components.interfaces.nsIIOService);
+    var uri = ios.newURI("chrome://findintabs/skin/findintabs-page.css", null, null);
+    if(!sss.sheetRegistered(uri, sss.USER_SHEET))
+      sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
+
+    
+    
     this.isFindInTabs = false
     this.initialized = true;
   },
@@ -70,15 +84,8 @@ var findInTabs = {
     var node = range.startContainer.parentNode; 
     
     node.scrollIntoView(true);
-  /*  
-    var baseNode = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
-    baseNode.style.border = 'red 2px solid';
-    baseNode.style.padding = "2px";
-    baseNode.className = "__mozilla-findintabs-selected";
-
-    range.surroundContents(node);    
-   //this.removeScrollIntoView(node);
-    */
+    
+       
     list.focus();
   }, 
   
@@ -208,12 +215,6 @@ var findInTabs = {
     
     var baseNode = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
     
-    //TODO: get the colors from the mozlla cs
-    baseNode.style.backgroundColor = 'yellow';
-    baseNode.style.color = 'black';
-    baseNode.style.display = "inline";
-    baseNode.style.fontSize = "inherit";
-    baseNode.style.padding = "0";
     baseNode.className = "__mozilla-findbar-search";
 
 
@@ -231,19 +232,14 @@ var findInTabs = {
   },
   
   removeHighlight: function(aDocument) {
-    var results = aDocument.getElementsByClassName("__mozilla-findbar-search");
-    this.removeNodes(results);
+    this.removeNodes(aDocument, "__mozilla-findbar-search");
   },
-  removeScrollIntoView: function(doc) {
-    var results = doc.getElementsByClassName("__mozilla-findintabs-selected");
-    this.removeNodes(results);
-  },
-  
-  removeNodes: function(aNodeList) {
-  
-    var len = aNodeList.length;
+  removeNodes: function(aDocument, aClassName) {
+    var nodeList = aDocument.getElementsByClassName(aClassName);
+    var len = nodeList.length;
+    
     for (var i = 0; i < len; i++) {
-      var elem = aNodeList.item(len - i - 1);
+      var elem = nodeList.item(len - i - 1);
       var parent = elem.parentNode;      
       while ((child = elem.firstChild)) {
 
@@ -255,7 +251,6 @@ var findInTabs = {
 
       parent.normalize();
     }
-  
   }
 }
 
