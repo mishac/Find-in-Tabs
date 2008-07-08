@@ -1,157 +1,38 @@
 var findInTabs = {
-  
+
   onLoad: function() {
-    gFindBar.resultsList = new Array();
-    gFindBar.searchItem = null;
-    
-    this.strings = document.getElementById('findintabs-strings');    
-    this.isFindInTabs = false;
-    
-        
-    // overrride closeing of the findbar to close the results bar too
-    gFindBar.close_old = gFindBar.close;
-    gFindBar.close = function() {
-      findInTabs.clearList();
-      document.getElementById('findintabs-results-box').hidden = true;
-      return gFindBar.close_old(); 
-    }
-    
-    // overrride opening of the findbar to open  the results bar too if it's set
-    gFindBar.open_old = gFindBar.open;
-    gFindBar.open = function() {
-      findInTabs.toggleResultsList(findInTabs.isFindInTabs);
-      return gFindBar.open_old();  
-    }
-    
-    //overload the next/prev buttons functions
-    gFindBar.onFindAgainCommand_old = gFindBar.onFindAgainCommand;
-    gFindBar.onFindAgainCommand = function(aFindPrevious) {
-      if (findInTabs.isFindInTabs) {
-        
-        var list = document.getElementById('findintabs-results-list');
-        
-        list.focus();
-        
-        if (aFindPrevious)
-          list.goUp();
-        else 
-          list.goDown();
-          
-        list.ensureSelectedElementIsVisible()
-      }
-      else { return gFindBar.onFindAgainCommand_old(aFindPrevious); }
-    
-    }
-    
-    //overrride the find function!
-    gFindBar._find_old = gFindBar._find;
-    gFindBar._find = function(aValue) {
-        //do it the new way
-       if (findInTabs.isFindInTabs) {
-        
-        val = aValue || this._findField.value;
-        
-    //    if (val == this.searchItem)
-      //    return;
-          
-
-        this.searchItem = val;
-
-        this._updateCaseSensitivity(val);
-
-
-        if (this._findMode != this.FIND_NORMAL)
-            this._setFindCloseTimeout();
-
-          findInTabs.clearList();
-          
-          var numTabs = gBrowser.browsers.length;
-          
-          for (i = 0; i < numTabs; i++) {
-            var frames = findInTabs.getFrames(new Array(), gBrowser.getBrowserAtIndex(i).contentWindow);
-            
-            for (j = 0; j < frames.length; ++j) {
-              var body = frames[j].document.body;
-              
-              //dont search pages that dont have a document body
-              if (!body) continue;
-              
-              var count = body.childNodes.length;
-              var searchRange = findInTabs.newRange(body, 0, body, count);
-              var startPt = findInTabs.newRange(body, 0, body, 0);
-              var endPt = findInTabs.newRange(body, count, body, count);
-              var retRange = null;
-              var finder = Components.classes["@mozilla.org/embedcomp/rangefind;1"]
-                                     .createInstance()
-                                     .QueryInterface(Components.interfaces.nsIFind);
-              finder.caseSensitive = this._shouldBeCaseSensitive(val);
-
-
-              while ((retRange = finder.Find(val, searchRange, startPt, endPt))) {
-              
-                
-               // sel.addRange(retRange);
-                this.resultsList.push(new findInTabs.result(retRange, i));
-                startPt = document.createRange();
-                startPt.setStart(retRange.endContainer, retRange.endOffset);
-                startPt.collapse(true);
-              }
-
-              searchRange.detach();
-              startPt.detach();
-              endPt.detach();
-        
-            } 
-          
-          
-          }
-          // set findbar status
-          var len = this.resultsList.length;
-          
-          if (len) {
-            findInTabs.populateList();
-            findInTabs.updateFindStatus(true);
-          } else {
-            this._findStatusIcon.setAttribute('status', 'notfound');
-            this._findStatusDesc.textContent = this._notFoundStr;
-            this._findField.setAttribute('status', 'notfound');
-            findInTabs.clearList();
-          }
-
-      } else {
-        //otherwise do it the old way
-        return gFindBar._find_old(aValue);
-      }
-    }
-      
-    
+    this.searchItem = null;
+    this.searchResults = null;
+    this.searchResults = [];
+    this.strings = document.getElementById('findintabs-strings');
+    this.resultsBox =  document.getElementById('findintabs-results-box');
+    this.resultsList = document.getElementById('findintabs-results-list');
+    this.isFindInTabs = false
     this.initialized = true;
-     
-    
   },
   clearList: function() {
     // remove list children and zero out the results array, etc.
-    list = document.getElementById("findintabs-results-list");
-    while (list.hasChildNodes()) {
-      list.removeChild(list.lastChild);
+    while (this.resultsList.hasChildNodes()) {
+      this.resultsList.removeChild(this.resultsList.lastChild);
     }
     
-    gFindBar.resultsList.length = 0;
+    this.searchResults.length = 0;
     
     var numTabs = gBrowser.browsers.length;
     
-    for (q = 0;q < numTabs; q++) {
+    for (var q = 0;q < numTabs; q++) {
       
       var doc = gBrowser.getBrowserAtIndex(q).contentDocument;
       
       this.removeHighlight(doc);
     }
+
   
   },
   toggleResultsList: function(aFindInTabs) {
     this.isFindInTabs = aFindInTabs;
     
-    document.getElementById('findintabs-results-box').hidden =  !this.isFindInTabs;
+    this.resultsBox.hidden =  !this.isFindInTabs;
     
     if (aFindInTabs) {
       gFindBar.getElement("highlight").disabled = true;
@@ -174,17 +55,19 @@ var findInTabs = {
   },
   
   selectResult: function() {
-    var t = document.getElementById('findintabs-results-list');
-    if (!gFindBar.resultsList[t.currentIndex]) {
+    
+    var list = this.resultsList;
+    
+    if (!this.searchResults[list.currentIndex]) {
       return;
     }
     
-    var tabNum = gFindBar.resultsList[t.currentIndex].ownerTab;
-    var range =  gFindBar.resultsList[t.currentIndex].range;
+    var tabNum = this.searchResults[list.currentIndex].ownerTab;
+    var range =  this.searchResults[list.currentIndex].range;
     
     gBrowser.mTabContainer.selectedIndex = tabNum;
 
-    node = range.startContainer.parentNode; 
+    var node = range.startContainer.parentNode; 
     
     node.scrollIntoView(true);
   /*  
@@ -196,21 +79,18 @@ var findInTabs = {
     range.surroundContents(node);    
    //this.removeScrollIntoView(node);
     */
-    t.focus();
+    list.focus();
   }, 
   
   getFrames: function(aWinList, aFrame) {
     const frameList = aFrame.frames;
     if (aWinList != null)
       aWinList.push(aFrame);
-    // in addition to finding the windows in this tab, we will clear any selections
-
-    var sel = aFrame.getSelection();
-    if (sel != null) {
-      sel.removeAllRanges();
-    }
-    for (var i = 0, j = frameList.length; i < j; i++) {
-      this.getFrames(aWinList, frameList[i]);
+      
+    var len = frameList.length;
+     
+    for (var k = 0; k < frameList.length; k++) {
+      this.getFrames(aWinList, frameList[k]);
     }
 
     return aWinList;
@@ -221,23 +101,26 @@ var findInTabs = {
     range.setEnd(aEndElem, aEndOffset);
     return range;
   },
+  
   result: function(aRange, aTab) {
     this.range = aRange;
     this.ownerTab = aTab;
   },
+  
   updateFindStatus: function(aStatusFlag) {
     // aStatusFlag (boolean)  True means show number of find results in the findbar status, false means clear it
-    findBar = document.getElementById('FindToolbar');
-    var statusIcon = findBar._findStatusIcon;
-    var statusText = findBar._findStatusDesc;
-    var findField = findBar._findField;
-    var len = gFindBar.resultsList.length;
+    //findBar = document.getElementById('FindToolbar');
+    var statusIcon = gFindBar._findStatusIcon;
+    var statusText = gFindBar._findStatusDesc;
+    var findField = gFindBar._findField;
+    var len = this.searchResults.length;
     
     if (aStatusFlag) {
       statusIcon.setAttribute('status', 'findintabs-results');
-      statusText.textContent = (len != 1) ? strings.getFormattedString('findResultStatusMessage', [len])
-                                    : strings.getFormattedString('findOneResultStatusMessage', [len]);
+      statusText.textContent = (len != 1) ? this.strings.getFormattedString('findResultStatusMessage', [len])
+                                    : this.strings.getFormattedString('findOneResultStatusMessage', [len]);
       findField.removeAttribute('status');
+      
       gFindBar.getElement("find-previous").disabled = false;
       gFindBar.getElement("find-next").disabled = false;
 
@@ -257,24 +140,22 @@ var findInTabs = {
     
     findField = gFindBar._findField;
     
-    listbox = document.getElementById('findintabs-results-list');
+    list = document.getElementById('findintabs-results-list');
     
-    for (i = 0; i < gFindBar.resultsList.length; i++) {
-      
+    len = this.searchResults.length
+    for (var i = 0; i < len; i++) {
+
       var listItem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "richlistitem");
-      var tabNum = gFindBar.resultsList[i].ownerTab + 1;
-      var tabTitle = gBrowser.getBrowserAtIndex(gFindBar.resultsList[i].ownerTab).contentDocument.title;
+      var tabNum = this.searchResults[i].ownerTab + 1;
+      var tabTitle = gBrowser.getBrowserAtIndex(this.searchResults[i].ownerTab).contentDocument.title;
       
       //getting range text and some text before and after
-      var range = gFindBar.resultsList[i].range;
+      var range =this.searchResults[i].range;
       
       var rangeText = range.toString();
             
       var beforeText = range.startContainer.textContent.substring(0, range.startOffset);
       var afterText = range.endContainer.textContent.substring(range.endOffset);
-      
-      
-      
       
       var hbox = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "hbox");
       
@@ -316,9 +197,9 @@ var findInTabs = {
       hbox.appendChild(cell3);
       
       listItem.appendChild(hbox);
-      listbox.appendChild(listItem);  
+      list.appendChild(listItem);  
       
-      findInTabs.highlight(gFindBar.resultsList[i].range);
+      this.highlight(this.searchResults[i].range);
     }
   
   },
@@ -350,38 +231,26 @@ var findInTabs = {
   },
   
   removeHighlight: function(aDocument) {
-  
-    
-    results = aDocument.getElementsByClassName("__mozilla-findbar-search");
-
+    var results = aDocument.getElementsByClassName("__mozilla-findbar-search");
     this.removeNodes(results);
-    
-    //aDocument.body.innerHTML.replace(/<span style="padding: 0pt; background-color: yellow; color: black; display: inline; font-size: inherit;" class="__mozilla-findbar-search">"(.+)<\/span>/, "$1");
   },
   removeScrollIntoView: function(doc) {
-  
-    
-    results = doc.getElementsByClassName("__mozilla-findintabs-selected");
+    var results = doc.getElementsByClassName("__mozilla-findintabs-selected");
     this.removeNodes(results);
   },
   
   removeNodes: function(aNodeList) {
   
-    len = aNodeList.length;
-    
-    for (i = 0; i < len; i++) {
-       
+    var len = aNodeList.length;
+    for (var i = 0; i < len; i++) {
       var elem = aNodeList.item(len - i - 1);
-
-      
       var parent = elem.parentNode;      
-      
       while ((child = elem.firstChild)) {
-        
+
         parent.insertBefore(child, elem);
-        
 
       }
+
       parent.removeChild(elem);
 
       parent.normalize();
@@ -390,4 +259,135 @@ var findInTabs = {
   }
 }
 
-window.addEventListener("load", findInTabs.onLoad, false);
+
+var findBarOverLoad = {
+  onLoad: function() {
+  
+    // overload functions of the findbar to take advantage of fintintabs 
+
+    
+    // override closeing of the findbar to close the results bar too.
+    gFindBar.close_old = gFindBar.close;
+    gFindBar.close = function() {
+      findInTabs.clearList();
+      findInTabs.resultsBox.hidden = true;
+      return gFindBar.close_old(); 
+    }
+    
+    // override opening of the findbar to open the results bar too if it's set
+    gFindBar.open_old = gFindBar.open;
+    gFindBar.open = function() {
+      findInTabs.toggleResultsList(findInTabs.isFindInTabs);
+      return gFindBar.open_old();  
+    }
+    
+    //overload the next/prev buttons functions
+    gFindBar.onFindAgainCommand_old = gFindBar.onFindAgainCommand;
+    gFindBar.onFindAgainCommand = function(aFindPrevious) {
+      if (findInTabs.isFindInTabs) {
+        
+        var list = findInTabs.resultsList;
+        
+        list.focus();
+        
+        if (aFindPrevious)
+          list.goUp();
+        else 
+          list.goDown();
+          
+        list.ensureSelectedElementIsVisible();
+      }
+      else { return gFindBar.onFindAgainCommand_old(aFindPrevious); }
+    
+    }
+    
+    //overrride the find function!
+    gFindBar._find_old = gFindBar._find;
+    gFindBar._find = function(aValue) {
+        //if findInTabs is on, do it the new way
+      if (findInTabs.isFindInTabs) {
+        
+        val = aValue || this._findField.value;
+        
+    /*    if (val == this.searchItem)
+              return;
+          */
+
+        findInTabs.searchItem = val;
+
+        this._updateCaseSensitivity(val);
+
+
+        if (this._findMode != this.FIND_NORMAL)
+          this._setFindCloseTimeout();
+
+        findInTabs.clearList();
+        
+        var numTabs = gBrowser.browsers.length;
+        
+        for (var i = 0; i < numTabs; i++) {
+          var frames = findInTabs.getFrames(new Array(), gBrowser.getBrowserAtIndex(i).contentWindow);
+          
+          for (var j = 0; j < frames.length; j++) {
+            var body = frames[j].document.body;
+            
+            //dont search pages that dont have a document body
+            if (!body) 
+              continue;
+            
+            var count = body.childNodes.length;
+            var searchRange = findInTabs.newRange(body, 0, body, count);
+            var startPt = findInTabs.newRange(body, 0, body, 0);
+            var endPt = findInTabs.newRange(body, count, body, count);
+            var retRange = null;
+            var finder = Components.classes["@mozilla.org/embedcomp/rangefind;1"]
+                                   .createInstance()
+                                   .QueryInterface(Components.interfaces.nsIFind);
+            finder.caseSensitive = this._shouldBeCaseSensitive(val);
+
+
+            while ((retRange = finder.Find(val, searchRange, startPt, endPt))) {
+            
+              findInTabs.searchResults.push(new findInTabs.result(retRange, i));
+              startPt = document.createRange();
+              startPt.setStart(retRange.endContainer, retRange.endOffset);
+              startPt.collapse(true);
+            }
+
+            searchRange.detach();
+            startPt.detach();
+            endPt.detach();
+      
+          } 
+          
+          
+        }
+          
+        // set findbar status
+
+        if (findInTabs.searchResults.length) {
+          findInTabs.populateList();
+          findInTabs.updateFindStatus(true);
+        } else {
+          this._findStatusIcon.setAttribute('status', 'notfound');
+          this._findStatusDesc.textContent = this._notFoundStr;
+          this._findField.setAttribute('status', 'notfound');
+          findInTabs.clearList();
+        }
+
+      } else {
+        //otherwise do it the old way
+        return gFindBar._find_old(aValue);
+      }
+    }
+  
+  }
+}
+
+  
+    
+
+window.addEventListener("load", function() {
+                                  findInTabs.onLoad();
+                                  findBarOverLoad.onLoad();
+                                  }, false);
