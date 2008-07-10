@@ -17,6 +17,16 @@
 				<em:maxVersion>3.0.*</em:maxVersion>
 			</Description>
 		</em:targetApplication>
+		
+		<!--- experimental songbird support -->
+    <em:targetApplication>
+      <Description>
+        <em:id>songbird@songbirdnest.com</em:id>
+        <em:minVersion>0.6</em:minVersion>
+        <em:maxVersion>0.7pre</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
 
 		<!-- Front End MetaData -->
 		<em:name>findintabs</em:name>
