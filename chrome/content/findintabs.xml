@@ -255,8 +255,8 @@
                     anonid="findbar-findintabs-check tabbable"
                     id="findbar-findintabs-check"
                     oncommand="_setFindInTabs(this.checked);"
-                    label="Find in Tabs"
-                    accesskey="t"
+                    label="&findintabs.button.label;"
+                    accesskey="&findintabs.button.accesskey;"
                     type="checkbox"
                     xbl:inherits="accesskey=findintabsaccesskey" />            
       <xul:checkbox anonid="find-case-sensitive"

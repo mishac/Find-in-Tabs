@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://findintabs/locale/findintabs.dtd">
 <?xml-stylesheet href="chrome://findintabs/skin/findintabs.css" type="text/css"?>
 <overlay id="findintabs-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="application/x-javascript" src="chrome://findintabs/content/findintabs.js" />
@@ -7,12 +8,12 @@
   </stringbundleset>
   <popupset>
     <menupopup id="findintabs-context-menu">
-      <menuitem label="Copy text" accesskey="c" oncommand="findInTabs.copyText()" />
+      <menuitem label="&findintabs.menu.copy;" accesskey="&findintabs.menu.accesskey;" oncommand="findInTabs.copyText()" />
     </menupopup>
   </popupset>
   <window id="main-window">
       <vbox anonid="findintabs-results-box" id="findintabs-results-box" insertbefore="browser-bottombox" hidden="true">
-        <label id="findintabs-results-label" value="Search Results:"/>
+        <label id="findintabs-results-label" value="&findintabs.results.label;"/>
         <richlistbox anonid="findintabs-results-list" id="findintabs-results-list" rows="6"  
           onselect="findInTabs.onSelectItem();" />
       </vbox>    
