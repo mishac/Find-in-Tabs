@@ -143,9 +143,10 @@ var findInTabs = {
   },
   
   populateList: function _populateList () { 
-    findField = gFindBar._findField;
-    list = document.getElementById("findintabs-results-list");
-    
+    var findField = gFindBar._findField;
+    var list = document.getElementById("findintabs-results-list");
+    var item = null;
+
     for (var i = 0; item = this.searchResults[i]; i++) {
       var listItem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", 
         "richlistitem");
@@ -241,6 +242,7 @@ var findInTabs = {
     for (var i = 0; i < len, elem = nodeList.item(len - i - 1); i++) {
 
       var parent = elem.parentNode;      
+	  var child = null;
 
       while ((child = elem.firstChild)) {
        parent.insertBefore(child, elem);
@@ -284,7 +286,7 @@ var findBarOverLoad = {
     gFindBar.open_old = gFindBar.open;
      gFindBar.open = function _newOpen(aMode) {
       
-      retVal = gFindBar.open_old(aMode);
+      var retVal = gFindBar.open_old(aMode);
       
       findInTabs.toggleResultsList(findInTabs.isFindInTabs);
       
@@ -314,7 +316,7 @@ var findBarOverLoad = {
     gFindBar._find = function new_Find(aValue) {
       //if findInTabs is on, do it the new way
       if (findInTabs.isFindInTabs) {
-        val = aValue || this._findField.value;
+        var val = aValue || this._findField.value;
         
         if (val == this.searchItem)
               return;
@@ -332,7 +334,8 @@ var findBarOverLoad = {
         
         for (var i = 0; i < numTabs; i++) {
           var frames = findInTabs.getFrames(new Array(), gBrowser.getBrowserAtIndex(i).contentWindow);
-          
+          var thisFrame = null;
+
           for (var j = 0; thisFrame = frames[j]; j++) {
             
             var body = thisFrame.document.body;
