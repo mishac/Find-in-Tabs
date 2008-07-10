@@ -1,6 +1,6 @@
-<!ENTITY findintabs.button.label "Find in Tabs">
-<!ENTITY findintabs.button.accesskey "F">
-<!ENTITY findintabs.button.tooltip "Find in all tabs">
-<!ENTITY findintabs.menu.copy "Copy Text">
+<!ENTITY findintabs.button.label "Cherche Tabs">
+<!ENTITY findintabs.button.accesskey "c">
+<!ENTITY findintabs.button.tooltip "Cherchez tous tabs">
+<!ENTITY findintabs.menu.copy "Copier Text">
 <!ENTITY findintabs.menu.accesskey "c">
-<!ENTITY findintabs.results.label "Search Results">
+<!ENTITY findintabs.results.label "Résultats de recherche">
