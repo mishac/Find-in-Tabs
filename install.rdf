@@ -3,7 +3,7 @@
 	xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
 	<Description about="urn:mozilla:install-manifest">
-		<em:id>michael.havas@gmail.com</em:id>
+		<em:id>FindInTabs@mishac.com</em:id>
 		
 		<em:version>0.1</em:version>
 		<em:type>2</em:type>
@@ -18,21 +18,14 @@
 			</Description>
 		</em:targetApplication>
 		
-		<!--- experimental songbird support -->
-    <em:targetApplication>
-      <Description>
-        <em:id>songbird@songbirdnest.com</em:id>
-        <em:minVersion>0.6</em:minVersion>
-        <em:maxVersion>0.7pre</em:maxVersion>
-      </Description>
-    </em:targetApplication>
-
-
 		<!-- Front End MetaData -->
 		<em:name>Find In Tabs</em:name>
 		<em:description>Searches for text in all tabs.</em:description>
 		<em:creator>Michael Havas</em:creator>
-		<em:contributor>Misha Chitharanjan</em:contributor>
-		<em:homepageURL>http://www.mypage.com/</em:homepageURL>
+		<em:developer>Misha Chitharanjan</em:developer>
+    <em:developer>Michael Havas</em:developer>
+    
+
+		<em:homepageURL></em:homepageURL>
 	</Description>
 </RDF>
