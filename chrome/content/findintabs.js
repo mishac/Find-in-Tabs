@@ -25,8 +25,8 @@ var findInTabs = {
     var uri = ios.newURI("chrome://findintabs/skin/findintabs-page.css", null, null);
     if(!sss.sheetRegistered(uri, sss.USER_SHEET))
       sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
-   
-    this.isFindInTabs = false
+    
+    this.isFindInTabs = false;
     this.initialized = true;
   },
   
