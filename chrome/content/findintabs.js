@@ -227,7 +227,7 @@
       var beforeSpan = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
       var afterSpan = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
 
-      rangeSpan.style.backgroundColor = "yellow";
+      rangeSpan.setAttribute("class", "findintabs-results-list-highlight");
 
       var rangeSpanText = document.createTextNode(rangeText);
       var beforeSpanText = document.createTextNode(beforeText);
