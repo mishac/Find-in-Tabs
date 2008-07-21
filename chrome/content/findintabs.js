@@ -248,7 +248,7 @@
       listItem.appendChild(hbox);
       list.appendChild(listItem);  
       
-      this.highlight(this.searchResults[i].range);
+      //this.highlight(this.searchResults[i].range);
     }
   },
   
@@ -260,7 +260,7 @@
     var endOffset = aRange.endOffset;
     var docfrag = aRange.extractContents();
     var before = startContainer.splitText(startOffset);
-       
+        
     var parent = before.parentNode;
     baseNode.appendChild(docfrag);
     parent.insertBefore(baseNode, before);
@@ -392,11 +392,20 @@ var findBarOverLoad = {
 
             while ((retRange = finder.Find(val, searchRange, startPt, endPt)) 
               && (findInTabs.searchResults.length <= findInTabs.MAX_RESULTS)) {
+
               
               findInTabs.searchResults.push(new findInTabs.result(retRange, i));        
+				/* Do the highlighting*/
+				var highlightedNode = findInTabs.highlight(retRange);
+			/*
               startPt = document.createRange();
-              startPt.setStart(retRange.endContainer, retRange.endOffset);
+              startPt.setStart(highlightedNode.endContainer, highlightedNode.endOffset);
               startPt.collapse(true);
+			*/
+				/* Set startPt to be after the highlighted node. */
+				startPt = document.createRange();
+				startPt.setStartAfter(highlightedNode);
+				startPt.collapse(false);
             }
 
             //cleanup
