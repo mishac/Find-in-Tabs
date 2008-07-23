@@ -75,11 +75,16 @@
     this.searchResults.length = 0;
     
     var numTabs = gBrowser.browsers.length;
-    
-    for (var i = 0;i < numTabs; i++) {
-      var doc = gBrowser.getBrowserAtIndex(i).contentDocument;
-      this.removeHighlight(doc);
+        
+    for (var i = 0; i < numTabs; i++) {
+      var frames = findInTabs.getFrames(new Array(), gBrowser.getBrowserAtIndex(i).contentWindow);
+      var thisFrame = null;
+      for (var j = 0; thisFrame = frames[j]; j++) {
+        var doc = thisFrame.document;
+        this.removeHighlight(doc);       
+      }
     }
+
   },
 
   toggleResultsList: function _toggleResultsList(aFindInTabs) {
@@ -278,19 +283,20 @@
   removeNodes: function _removeNodes(aDocument, aClassName) {
     var nodeList = aDocument.getElementsByClassName(aClassName);
     var len = nodeList.length;
-    var elem;
+    var elem = null;
     
-    for (var i = 0; i < len, elem = nodeList.item(len - i - 1); i++) {
-
+    for (var i = len - 1; i >= 0; i--) {
+      elem = nodeList.item(i);
       var parent = elem.parentNode;      
-	  var child = null;
-
+      
+	    var child = null;
       while ((child = elem.firstChild)) {
-       parent.insertBefore(child, elem);
+        parent.insertBefore(child, elem);
       }
 
       parent.removeChild(elem);
       parent.normalize();
+    
     }
   },
   
