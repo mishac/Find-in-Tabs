@@ -40,6 +40,7 @@
   onLoad: function _onLoad() {
     this.MAX_RESULTS = 200;
     this.HIGHLIGHT_CLASS = "__mozilla-findbar-search";
+
     
     this.searchItem = null;
     this.searchResults = [];
@@ -62,6 +63,14 @@
     var uri = ios.newURI("chrome://findintabs/skin/findintabs-page.css", null, null);
     if(!sss.sheetRegistered(uri, sss.USER_SHEET))
       sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
+
+    //load prefs
+    // Get the root branch
+    var prefs = Components.classes["@mozilla.org/preferences-service;1"].
+                getService(Components.interfaces.nsIPrefBranch);
+
+    this.enableSound = prefs.getBoolPref("accessibility.typeaheadfind.enablesound");
+    this.soundURL = prefs.getCharPref("accessibility.typeaheadfind.soundURL");
     
     this.isFindInTabs = false;
     this.initialized = true;
@@ -314,6 +323,17 @@
   onKeyPress: function _onKeyPress(aEvent) {
     if(aEvent.keyCode == aEvent.DOM_VK_ESCAPE)
       gFindBar.close();
+  },
+  
+  playSound: function _playSound() {
+    if (this.enableSound && this.soundURL) {
+      var sound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
+      if (this.soundURL == 'beep')
+        sound.beep();
+      else {
+        sound.play(this.soundURL);
+      }
+    }
   }
 }
 
@@ -368,9 +388,11 @@ var findBarOverLoad = {
         if (val == this.searchItem)
               return;
           
-
+          
         findInTabs.searchItem = val;
         this._updateCaseSensitivity(val);
+
+
 
         if (this._findMode != this.FIND_NORMAL)
           this._setFindCloseTimeout();
@@ -431,6 +453,8 @@ var findBarOverLoad = {
           this._findStatusDesc.textContent = this._notFoundStr;
           this._findField.setAttribute("status", "notfound");
           findInTabs.clearList();
+          findInTabs.playSound();
+          
         }
       } else {
         //otherwise do it the old way
