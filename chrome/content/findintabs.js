@@ -38,7 +38,6 @@
  var findInTabs = {
 
   onLoad: function _onLoad() {
-    this.MAX_RESULTS = 200;
     this.HIGHLIGHT_CLASS = "__mozilla-findbar-search";
 
     
@@ -71,7 +70,8 @@
 
     this.enableSound = prefs.getBoolPref("accessibility.typeaheadfind.enablesound");
     this.soundURL = prefs.getCharPref("accessibility.typeaheadfind.soundURL");
-    
+    this.maxResults = prefs.getIntPref("extensions.findintabs.maxresults");
+        
     this.isFindInTabs = false;
     this.initialized = true;
   },
@@ -173,8 +173,8 @@
       if (len == 1) { 
         statusText.textContent = this.strings.getFormattedString("findOneResultStatusMessage", [len]);
       }
-      else if (len > this.MAX_RESULTS) {
-         statusText.textContent = this.strings.getFormattedString("findResultsTooMany", [this.MAX_RESULTS]);
+      else if (len > this.maxResults) {
+         statusText.textContent = this.strings.getFormattedString("findResultsTooMany", [this.maxResults]);
       }
       else {
         statusText.textContent = this.strings.getFormattedString("findResultStatusMessage", [len]);  
@@ -423,8 +423,8 @@ var findBarOverLoad = {
             finder.caseSensitive = this._shouldBeCaseSensitive(val);
 
             while ((findRange = finder.Find(val, searchRange, startPt, endPt)) 
-              && (findInTabs.searchResults.length <= findInTabs.MAX_RESULTS)) {
-
+              && (findInTabs.searchResults.length <= findInTabs.maxResults)) {
+                
       				/* Do the highlighting*/
       				var highlightedNode = findInTabs.highlight(findRange);
       				var resultRange = document.createRange();
