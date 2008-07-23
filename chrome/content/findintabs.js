@@ -197,17 +197,21 @@
       //getting range text and some text before and after
       var range = item.range;
       var rangeText = range.toString();
-      var startContainer = range.startContainer;
-      var endContainer = range.endContainer;
       
-      var beforeText = startContainer.textContent.substring(0, range.startOffset);
+      var beforeRange = document.createRange();
+      beforeRange.selectNodeContents(range.startContainer);
+      beforeRange.setEnd(range.startContainer, range.startOffset);
+      var beforeText = beforeRange.toString();
       if (beforeText.length > 80)
         beforeText = beforeText.substr(beforeText.length - 80, 80);
       
-      var afterText = endContainer.textContent.substring(range.endOffset);
+      var afterRange = document.createRange();
+      afterRange.selectNodeContents(range.endContainer);
+      afterRange.setStart(range.endContainer, range.endOffset);
+      var afterText = afterRange.toString();
       if (afterText.length > 80)
         afterText = afterText.substr(0, 80);
-
+      
       var hbox = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "hbox");
 
       var cell1 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "label");
@@ -384,28 +388,26 @@ var findBarOverLoad = {
             var searchRange = findInTabs.newRange(body, 0, body, count);
             var startPt = findInTabs.newRange(body, 0, body, 0);
             var endPt = findInTabs.newRange(body, count, body, count);
-            var retRange = null;
+            var findRange = null;
             var finder = Components.classes["@mozilla.org/embedcomp/rangefind;1"]
                                    .createInstance()
                                    .QueryInterface(Components.interfaces.nsIFind);
             finder.caseSensitive = this._shouldBeCaseSensitive(val);
 
-            while ((retRange = finder.Find(val, searchRange, startPt, endPt)) 
+            while ((findRange = finder.Find(val, searchRange, startPt, endPt)) 
               && (findInTabs.searchResults.length <= findInTabs.MAX_RESULTS)) {
 
-              
-              findInTabs.searchResults.push(new findInTabs.result(retRange, i));        
-				/* Do the highlighting*/
-				var highlightedNode = findInTabs.highlight(retRange);
-			/*
-              startPt = document.createRange();
-              startPt.setStart(highlightedNode.endContainer, highlightedNode.endOffset);
-              startPt.collapse(true);
-			*/
-				/* Set startPt to be after the highlighted node. */
-				startPt = document.createRange();
-				startPt.setStartAfter(highlightedNode);
-				startPt.collapse(false);
+      				/* Do the highlighting*/
+      				var highlightedNode = findInTabs.highlight(findRange);
+      				var resultRange = document.createRange();
+      				resultRange.selectNode(highlightedNode);
+      				
+      				findInTabs.searchResults.push(new findInTabs.result(resultRange, i));
+
+      				/* Set startPt to be after the highlighted node. */
+      				startPt = document.createRange();
+      				startPt.setStartAfter(highlightedNode);
+      				startPt.collapse(false);
             }
 
             //cleanup
