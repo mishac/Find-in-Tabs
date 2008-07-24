@@ -50,7 +50,7 @@
     this.resultsBox =  document.getElementById("findintabs-results-box");
     this.resultsList = document.getElementById("findintabs-results-list");
     this.statusLabel = gFindBar.getElement("match-findintabs-status");
-    
+    this.splitter = document.getElementById("findintabs-splitter");
     this.resultsBox.addEventListener("keypress", this.onKeyPress, false);
     
     
@@ -99,6 +99,7 @@
   toggleResultsList: function _toggleResultsList(aFindInTabs) {
     this.isFindInTabs = aFindInTabs;
     this.resultsBox.hidden =  !this.isFindInTabs;
+    this.splitter.hidden = !this.isFindInTabs;
     
     if (this.isFindInTabs) {
       gFindBar.getElement("highlight").checked = false;
@@ -346,6 +347,7 @@ var findBarOverLoad = {
     gFindBar.close = function _newClose() {
       findInTabs.clearList();
       findInTabs.resultsBox.hidden = true;
+      findInTabs.splitter.hidden = true;
       return gFindBar.close_old(); 
     }
     
