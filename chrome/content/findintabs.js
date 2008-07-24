@@ -291,22 +291,24 @@
   },
 
   removeNodes: function _removeNodes(aDocument, aClassName) {
-    var nodeList = aDocument.getElementsByClassName(aClassName);
-    var len = nodeList.length;
-    var elem = null;
-    
-    for (var i = len - 1; i >= 0; i--) {
-      elem = nodeList.item(i);
-      var parent = elem.parentNode;      
+    if (aDocument) {
+      var nodeList = aDocument.getElementsByClassName(aClassName);
+      var len = nodeList.length;
+      var elem = null;
       
-	    var child = null;
-      while ((child = elem.firstChild)) {
-        parent.insertBefore(child, elem);
+      for (var i = len - 1; i >= 0; i--) {
+        elem = nodeList.item(i);
+        var parent = elem.parentNode;      
+        
+  	    var child = null;
+        while ((child = elem.firstChild)) {
+          parent.insertBefore(child, elem);
+        }
+  
+        parent.removeChild(elem);
+        parent.normalize();
+      
       }
-
-      parent.removeChild(elem);
-      parent.normalize();
-    
     }
   },
   
