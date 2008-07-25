@@ -4,3 +4,4 @@
 <!ENTITY findintabs.menu.copy "Copy text">
 <!ENTITY findintabs.menu.accesskey "i">
 <!ENTITY findintabs.results.label "Search Results:">
+<!ENTITY findintabs.closebutton.tooltip "Close Search Results">
