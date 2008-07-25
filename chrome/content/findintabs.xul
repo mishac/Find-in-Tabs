@@ -49,9 +49,10 @@
   </popupset>
   <window id="main-window">
       <splitter id="findintabs-splitter" insertbefore="browser-bottombox" hidden="true" resizeafter="flex" />
-      <vbox anonid="findintabs-results-box" id="findintabs-results-box" insertbefore="browser-bottombox" hidden="true" flex="1">
+      <vbox anonid="findintabs-results-box" id="findintabs-results-box" insertbefore="browser-bottombox" hidden="true" flex="1" >
         <label id="findintabs-results-label" value="&findintabs.results.label;"/>
-        <richlistbox anonid="findintabs-results-list" id="findintabs-results-list" rows="6" flex="1" persist="height"
+        <richlistbox anonid="findintabs-results-list" id="findintabs-results-list" flex="1" persist="height"
+          height="100px"
           onselect="findInTabs.onSelectItem();" />
       </vbox>    
   </window>
