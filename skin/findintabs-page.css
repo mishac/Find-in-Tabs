@@ -1,1 +1,1 @@
-.__mozilla-findbar-search {  background-color: yellow !important;  color: black !important;}.__mozilla-findbar-search::-moz-selection {	background: #00ff00; /* Firefox */}
+.__mozilla-findbar-search {  background-color: yellow !important;  color: black !important;  display: inline !important;  padding: 0 !important;}.__mozilla-findbar-search::-moz-selection {	background: #00ff00; /* Firefox */}
