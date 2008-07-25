@@ -37,8 +37,8 @@
   - ***** END LICENSE BLOCK ***** -->
 <!DOCTYPE overlay SYSTEM "chrome://findintabs/locale/findintabs.dtd">
 <?xml-stylesheet href="chrome://findintabs/skin/findintabs.css" type="text/css"?>
-<overlay id="findintabs-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-  <script type="application/x-javascript" src="chrome://findintabs/content/findintabs.js" />
+<overlay id="findintabs-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">  
+<script type="application/x-javascript" src="chrome://findintabs/content/findintabs.js" />
   <stringbundleset id="stringbundleset">
     <stringbundle id="findintabs-strings" src="chrome://findintabs/locale/findintabs.properties"/>
   </stringbundleset>
@@ -48,11 +48,15 @@
     </menupopup>
   </popupset>
   <window id="main-window" debug="true">
-      <splitter id="findintabs-splitter" insertbefore="browser-bottombox" hidden="true" />
-      <vbox anonid="findintabs-results-box" id="findintabs-results-box" insertbefore="browser-bottombox" hidden="true">
+    <splitter id="findintabs-splitter" insertbefore="browser-bottombox" hidden="true" resizeafter="flex" />      
+    <vbox id="findintabs-results-box" insertbefore="browser-bottombox" hidden="true" flex="1">
+      <hbox id="findintabs-results-top" flex="0">
         <label id="findintabs-results-label" value="&findintabs.results.label;" />
-        <richlistbox anonid="findintabs-results-list" id="findintabs-results-list" flex="1"
-          onselect="findInTabs.onSelectItem();" />
-      </vbox>    
+        <toolbarbutton align="right" id="findintabs-closebutton" icon="close" oncommand="findInTabs.onCloseButton();"/>
+      </hbox>
+      <richlistbox anonid="findintabs-results-list" id="findintabs-results-list" flex="1"
+        onselect="findInTabs.onSelectItem();" />
+    </vbox>
+    
   </window>
 </overlay>

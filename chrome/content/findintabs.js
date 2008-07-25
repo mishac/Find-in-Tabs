@@ -52,7 +52,7 @@
     this.statusLabel = gFindBar.getElement("match-findintabs-status");
     this.splitter = document.getElementById("findintabs-splitter");
     this.resultsBox.addEventListener("keypress", this.onKeyPress, false);
-
+    this.statusbar = document.getElementById("status-bar");
     //register the style sheet
     var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
                     .getService(Components.interfaces.nsIStyleSheetService);
@@ -340,6 +340,11 @@
         sound.play(this.soundURL);
       }
     }
+  },
+  
+  onCloseButton: function _onCloseButton() {
+    this.checkbox.checked = false;
+    gFindBar._setFindInTabs(false);
   }
 }
 
