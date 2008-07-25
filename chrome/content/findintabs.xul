@@ -47,12 +47,11 @@
       <menuitem label="&findintabs.menu.copy;" accesskey="&findintabs.menu.accesskey;" oncommand="findInTabs.copyText()" />
     </menupopup>
   </popupset>
-  <window id="main-window">
-      <splitter id="findintabs-splitter" insertbefore="browser-bottombox" hidden="true" resizeafter="flex" />
-      <vbox anonid="findintabs-results-box" id="findintabs-results-box" insertbefore="browser-bottombox" hidden="true" flex="1" >
-        <label id="findintabs-results-label" value="&findintabs.results.label;"/>
-        <richlistbox anonid="findintabs-results-list" id="findintabs-results-list" flex="1" persist="height"
-          height="100px"
+  <window id="main-window" debug="true">
+      <splitter id="findintabs-splitter" insertbefore="browser-bottombox" hidden="true" />
+      <vbox anonid="findintabs-results-box" id="findintabs-results-box" insertbefore="browser-bottombox" hidden="true">
+        <label id="findintabs-results-label" value="&findintabs.results.label;" />
+        <richlistbox anonid="findintabs-results-list" id="findintabs-results-list" flex="1"
           onselect="findInTabs.onSelectItem();" />
       </vbox>    
   </window>
