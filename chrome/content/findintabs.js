@@ -123,11 +123,14 @@
     var range =  this.searchResults[list.currentIndex].range;
     
     gBrowser.mTabContainer.selectedIndex = tabNum;
-    
+    var win = gBrowser.getBrowserAtIndex(tabNum).contentWindow;
+    var sel = win.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  
     var node = range.startContainer.parentNode;
     node.scrollIntoView(true);
-    
-    list.focus();
+    //win.focus();
   }, 
   
   getFrames: function _getFrames(aWinList, aFrame) {
@@ -197,7 +200,7 @@
     var findField = gFindBar._findField;
     var list = document.getElementById("findintabs-results-list");
     var item = null;
-
+    var isMatchingTab = false;
     for (var i = 0; item = this.searchResults[i]; i++) {
       var listItem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", 
         "richlistitem");
@@ -231,11 +234,13 @@
       var cell1 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "label");
       cell1.setAttribute("class", "findintabs-results-list-tabnumber");
       cell1.setAttribute("value", "Tab #" + tabNum);
+      cell1.setAttribute("tooltiptext", "Tab #" + tabNum + ": " + tabTitle);
       
       var cell2 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "label");
       cell2.setAttribute("class", "findintabs-results-list-tabtitle");
       cell2.setAttribute("value", tabTitle);
       cell2.setAttribute("crop", "end");
+      cell2.setAttribute("tooltiptext",  "Tab #" + tabNum + ": " + tabTitle);
       
       var cell3 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "description");
       cell3.setAttribute("crop", "end");
@@ -258,16 +263,23 @@
       cell3.appendChild(beforeSpan); 
       cell3.appendChild(rangeSpan); 
       cell3.appendChild(afterSpan); 
+      cell3.setAttribute("tooltiptext", cell3.textContent);
       
       hbox.appendChild(cell1);
       hbox.appendChild(cell2);
       hbox.appendChild(cell3);
       
       listItem.appendChild(hbox);
-      list.appendChild(listItem);  
+      list.appendChild(listItem);
       
-      //this.highlight(this.searchResults[i].range);
+      if ((!isMatchingTab) && (item.ownerTab == gBrowser.mTabContainer.selectedIndex)) {
+        list.selectedItem = listItem;
+        list.ensureSelectedElementIsVisible();
+        isMatchingTab = true;
+      }  
+      
     }
+    
   },
   
   highlight: function _highlight(aRange) {
