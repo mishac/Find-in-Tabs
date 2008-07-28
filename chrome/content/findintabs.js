@@ -40,7 +40,6 @@
   onLoad: function _onLoad() {
     this.HIGHLIGHT_CLASS = "__mozilla-findbar-search";
 
-    
     this.searchItem = null;
     this.searchResults = [];
     
@@ -70,10 +69,7 @@
     this.enableSound = prefs.getBoolPref("accessibility.typeaheadfind.enablesound");
     this.soundURL = prefs.getCharPref("accessibility.typeaheadfind.soundURL");
     this.maxResults = prefs.getIntPref("extensions.findintabs.maxresults");
-
-    // Height doesn't get reset properly if we don't do this. god knows why.
-    this.resultsBox.height = this.resultsBox.style.height;
-    
+        
     this.isFindInTabs = false;
     this.initialized = true;
 
