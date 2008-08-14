@@ -233,8 +233,9 @@
 
       var cell1 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "label");
       cell1.setAttribute("class", "findintabs-results-list-tabnumber");
-      cell1.setAttribute("value", "Tab #" + tabNum);
-      cell1.setAttribute("tooltiptext", "Tab #" + tabNum + ": " + tabTitle);
+      var tabString = this.strings.getFormattedString("findInTabsTab", []) + " #" + tabNum;
+      cell1.setAttribute("value", tabString);
+      cell1.setAttribute("tooltiptext", tabString + ": " + tabTitle);
       
       var cell2 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "label");
       cell2.setAttribute("class", "findintabs-results-list-tabtitle");
