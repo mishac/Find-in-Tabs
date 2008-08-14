@@ -1,0 +1,5 @@
+content   findintabs   chrome/content/
+locale findintabs en-US locale/en-US/
+skin findintabs classic/1.0 skin/
+
+overlay chrome://browser/content/browser.xul chrome://findintabs/content/findintabs.xul
