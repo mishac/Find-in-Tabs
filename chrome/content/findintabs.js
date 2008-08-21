@@ -182,7 +182,7 @@
       else {
         statusText.textContent = this.strings.getFormattedString("findResultStatusMessage", [len]);  
       }
-      
+     
       findField.removeAttribute("status");
       findPrev.disabled = false;
       findNext.disabled = false;
@@ -194,6 +194,13 @@
       findPrev.disabled = true;
       findNext.disabled = true;
     }
+  },
+
+  // Returns the favicon URI given a tab number (integer)
+  getFaviconURI: function _getFaviconURI (pTabnum) {
+	var tabnum = pTabnum;
+	var faviconService = Components.classes["@mozilla.org/browser/favicon-service;1"].getService(Components.interfaces.nsIFaviconService);
+	return faviconService.getFaviconImageForPage(gBrowser.getBrowserAtIndex(tabnum).currentURI).spec;
   },
   
   populateList: function _populateList () { 
@@ -210,6 +217,7 @@
       
       var tabNum = item.ownerTab + 1;
       var tabTitle = gBrowser.getBrowserAtIndex(item.ownerTab).contentDocument.title;
+	  var faviconURI = this.getFaviconURI(item.ownerTab);
       
       //getting range text and some text before and after
       var range = item.range;
@@ -229,11 +237,17 @@
       if (afterText.length > 80)
         afterText = afterText.substr(0, 80);
       
-      var hbox = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "hbox");
+      var tabString = this.strings.getFormattedString("findInTabsTab", []) + " #" + tabNum;
 
+	  var hbox = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "hbox");
+	  hbox.setAttribute("align", "center");
+	  var faviconCell = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "image");
+	  faviconCell.setAttribute("class", "findintabs-favicon");
+	  faviconCell.setAttribute("src", faviconURI);
+	  faviconCell.setAttribute("tooltiptext", tabString + ": " + tabTitle);
+	
       var cell1 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "label");
       cell1.setAttribute("class", "findintabs-results-list-tabnumber");
-      var tabString = this.strings.getFormattedString("findInTabsTab", []) + " #" + tabNum;
       cell1.setAttribute("value", tabString);
       cell1.setAttribute("tooltiptext", tabString + ": " + tabTitle);
       
@@ -241,7 +255,7 @@
       cell2.setAttribute("class", "findintabs-results-list-tabtitle");
       cell2.setAttribute("value", tabTitle);
       cell2.setAttribute("crop", "end");
-      cell2.setAttribute("tooltiptext",  "Tab #" + tabNum + ": " + tabTitle);
+      cell2.setAttribute("tooltiptext", tabString + ": " + tabTitle);
       
       var cell3 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "description");
       cell3.setAttribute("crop", "end");
@@ -266,6 +280,7 @@
       cell3.appendChild(afterSpan); 
       cell3.setAttribute("tooltiptext", cell3.textContent);
       
+      hbox.appendChild(faviconCell);
       hbox.appendChild(cell1);
       hbox.appendChild(cell2);
       hbox.appendChild(cell3);
