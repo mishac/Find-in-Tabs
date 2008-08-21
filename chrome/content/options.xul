@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<prefwindow xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="findintabs-prefwindow" title="&findintabs.preferences.windowTitle;">
+<prefpane id="pane1" label="oogabooga">
+  <preferences>
+    <preference id="pref1" name="pref.name" type="bool"/>
+  </preferences>
+</prefpane>     
+</prefwindow>

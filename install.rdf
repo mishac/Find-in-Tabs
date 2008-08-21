@@ -6,7 +6,19 @@
 		<em:id>FindInTabs@mishac.com</em:id>
 		
 		<em:version>0.4pre</em:version>
-		<em:type>2</em:type>
+
+		<!-- Front End MetaData -->
+		<em:name>Find In Tabs</em:name>
+		<em:description>Searches for text in all tabs.</em:description>
+		<em:creator>Michael Havas</em:creator>
+		<em:developer>Misha Chitharanjan</em:developer>
+    <em:developer>Michael Havas</em:developer>
+    <em:translator>Alain Besancon</em:translator>
+
+		<em:homepageURL>https://addons.mozilla.org/en-US/firefox/addon/8078</em:homepageURL>
+		
+		<em:optionsURL>chrome://findintabs/content/options.xul</em:optionsURL>
+		
 
 		<!-- Target Application this extension can install into,
 		with minimum and maximum supported versions. -->
@@ -16,16 +28,8 @@
 				<em:minVersion>3.0</em:minVersion>
 				<em:maxVersion>3.1a2pre</em:maxVersion>
 			</Description>
+			
 		</em:targetApplication>
 		
-		<!-- Front End MetaData -->
-		<em:name>Find In Tabs</em:name>
-		<em:description>Searches for text in all tabs.</em:description>
-		<em:creator>Michael Havas</em:creator>
-		<em:developer>Misha Chitharanjan</em:developer>
-    <em:developer>Michael Havas</em:developer>
-    
-
-		<em:homepageURL></em:homepageURL>
 	</Description>
 </RDF>
