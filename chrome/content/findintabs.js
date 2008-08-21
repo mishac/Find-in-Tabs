@@ -76,6 +76,32 @@
     this.enableSound = prefs.getBoolPref("accessibility.typeaheadfind.enablesound");
     this.soundURL = prefs.getCharPref("accessibility.typeaheadfind.soundURL");
     this.maxResults = prefs.getIntPref("extensions.findintabs.maxresults");
+
+    
+    
+    var sheets = document.styleSheets;
+    for (var i = 0; i < sheets.length; i++) {
+      if (sheets.item(i).href == "chrome://findintabs/skin/findintabs.css") {
+        var cssRules = document.styleSheets.item(i).cssRules;
+        break;
+      }
+    }
+
+    for (i = 0; i < cssRules.length; i++) {
+      cssRule = cssRules.item(i);          
+      if (cssRule.type == cssRule.STYLE_RULE) {
+       switch(cssRule.selectorText) {
+         case "#findintabs-results-list .findintabs-results-list-tabnumber":
+           this.tabnumberStyle = cssRule;
+           break;
+         case "#findintabs-results-list .findintabs-results-list-tabtitle":
+           this.tabtitleStyle = cssRule;
+           break;
+         default:
+           break;
+        }
+      }
+    }
     
     this.isFindInTabs = false;
     this.initialized = true;
@@ -380,32 +406,12 @@
   },
   
   resizeColumns: function _resizeColumns() {
-    var cssRules;
-    var sheets = document.styleSheets;
-    for (var i = 0; i < sheets.length; i++) {
-     if (sheets.item(i).href == "chrome://findintabs/skin/findintabs.css") {
-       cssRules = document.styleSheets.item(i).cssRules;
-       break;
-     }
-    }
-    if (cssRules) {
-      for (i = 0; i < cssRules.length; i++) {
-        cssRule = cssRules.item(i);          
-        if (cssRule.type == cssRule.STYLE_RULE) {
-         switch(cssRule.selectorText) {
-           case "#findintabs-results-list .findintabs-results-list-tabnumber":
-             var width = this.tabNumberLabel.boxObject.width + "px";
-             cssRule.style.setProperty("width", width, "important");
-             break;
-           case "#findintabs-results-list .findintabs-results-list-tabtitle":
-             var width = this.tabTitleLabel.boxObject.width + "px";
-             cssRule.style.setProperty("width", width, "important");
-             break;          
-         }
-        }
-      }
-    }
+    var width = this.tabTitleLabel.boxObject.width + "px";
+    this.tabtitleStyle.style.setProperty("width", width, "important");
+    width = this.tabNumberLabel.boxObject.width + "px";
+    this.tabnumberStyle.style.setProperty("width", width, "important");
   }
+  
   
 }
 
