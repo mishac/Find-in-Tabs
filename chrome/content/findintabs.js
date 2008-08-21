@@ -52,6 +52,13 @@
     this.splitter = document.getElementById("findintabs-splitter");
     this.resultsBox.addEventListener("keypress", this.onKeyPress, false);
     this.statusbar = document.getElementById("status-bar");
+    this.labelTree = document.getElementById("findintabs-label-tree");
+    
+    this.tabNumberLabel =  document.getElementById("findintabs-label-tabnumber");
+    this.tabNumberLabel.onClick = function() {};
+    this.tabTitleLabel =  document.getElementById("findintabs-label-tabtitle");
+    this.tabTextLabel =  document.getElementById("findintabs-label-tabtext");
+    
     //register the style sheet
     var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
                     .getService(Components.interfaces.nsIStyleSheetService);
@@ -69,7 +76,7 @@
     this.enableSound = prefs.getBoolPref("accessibility.typeaheadfind.enablesound");
     this.soundURL = prefs.getCharPref("accessibility.typeaheadfind.soundURL");
     this.maxResults = prefs.getIntPref("extensions.findintabs.maxresults");
-        
+    
     this.isFindInTabs = false;
     this.initialized = true;
 
@@ -105,10 +112,10 @@
       gFindBar.getElement("highlight").disabled = true;
       this.statusLabel.value = this.strings.getFormattedString("findInTabsStatus", []);
       this.statusLabel.hidden = gFindBar._findMode == gFindBar.FIND_NORMAL;
+      this.resizeColumns();
     } else {
       this.clearList();
       this.statusLabel.value = "";
-      
     }
     if (gFindBar._findField.value)
       gFindBar._find();
@@ -239,13 +246,14 @@
       
       var tabString = this.strings.getFormattedString("findInTabsTab", []) + " #" + tabNum;
 
-	  var hbox = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "hbox");
-	  hbox.setAttribute("align", "center");
-	  var faviconCell = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "image");
-	  faviconCell.setAttribute("class", "findintabs-favicon");
-	  faviconCell.setAttribute("src", faviconURI);
-	  faviconCell.setAttribute("tooltiptext", tabString + ": " + tabTitle);
-	
+  	  var hbox = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "hbox");
+  	  hbox.setAttribute("align", "center");
+  	  
+  	  var faviconCell = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "image");
+  	  faviconCell.setAttribute("class", "findintabs-favicon");
+  	  faviconCell.setAttribute("src", faviconURI);
+  	  faviconCell.setAttribute("tooltiptext", tabString + ": " + tabTitle);
+  	
       var cell1 = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "label");
       cell1.setAttribute("class", "findintabs-results-list-tabnumber");
       cell1.setAttribute("value", tabString);
@@ -369,7 +377,36 @@
   onCloseButton: function _onCloseButton() {
     this.checkbox.checked = false;
     gFindBar._setFindInTabs(false);
+  },
+  
+  resizeColumns: function _resizeColumns() {
+    var cssRules;
+    var sheets = document.styleSheets;
+    for (var i = 0; i < sheets.length; i++) {
+     if (sheets.item(i).href == "chrome://findintabs/skin/findintabs.css") {
+       cssRules = document.styleSheets.item(i).cssRules;
+       break;
+     }
+    }
+    if (cssRules) {
+      for (i = 0; i < cssRules.length; i++) {
+        cssRule = cssRules.item(i);          
+        if (cssRule.type == cssRule.STYLE_RULE) {
+         switch(cssRule.selectorText) {
+           case "#findintabs-results-list .findintabs-results-list-tabnumber":
+             var width = this.tabNumberLabel.boxObject.width + "px";
+             cssRule.style.setProperty("width", width, "important");
+             break;
+           case "#findintabs-results-list .findintabs-results-list-tabtitle":
+             var width = this.tabTitleLabel.boxObject.width + "px";
+             cssRule.style.setProperty("width", width, "important");
+             break;          
+         }
+        }
+      }
+    }
   }
+  
 }
 
 // overload functions of the findbar to take advantage of fintintabs
