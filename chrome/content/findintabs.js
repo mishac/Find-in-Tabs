@@ -445,18 +445,37 @@ var findBarOverLoad = {
 
             while ((findRange = finder.Find(val, searchRange, startPt, endPt)) 
               && (findInTabs.searchResults.length <= findInTabs.maxResults)) {
-                
+              
+              var validResult = false;
       				/* Do the highlighting*/
-      				var highlightedNode = findInTabs.highlight(findRange);
-      				var resultRange = document.createRange();
-      				resultRange.selectNode(highlightedNode);
-      				
-      				findInTabs.searchResults.push(new findInTabs.result(resultRange, i));
-
-      				/* Set startPt to be after the highlighted node. */
-      				startPt = document.createRange();
-      				startPt.setStartAfter(highlightedNode);
-      				startPt.collapse(false);
+      				if (gFindBar._findMode == gFindBar.FIND_LINKS) {
+      				  // If the result is not in an "a", it's not valid!
+                var el = findRange.startContainer;
+                while (el) {
+                  if ((el.tagName && (el.tagName.toLowerCase() == "a"))) {
+                    validResult = true;
+                    break
+                  }
+                  el = el.parentNode;
+                }
+              } else {
+                validResult = true;
+              }
+              if (validResult) {
+        				var highlightedNode = findInTabs.highlight(findRange);
+        				var resultRange = document.createRange();
+        				resultRange.selectNode(highlightedNode);
+  
+        				findInTabs.searchResults.push(new findInTabs.result(resultRange, i));
+        				/* Set startPt to be after the highlighted node. */
+        				startPt = document.createRange();
+        				startPt.setStartAfter(highlightedNode);
+        				startPt.collapse(false);
+              } else {
+        				startPt = document.createRange();
+        				startPt = findRange;
+        				startPt.collapse(false);
+              }
             }
 
             //cleanup
