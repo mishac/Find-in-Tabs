@@ -1,0 +1,1 @@
+pref("extensions.findintabs.maxresults", 200);

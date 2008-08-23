@@ -1,0 +1,7 @@
+<!ENTITY findintabs.button.label "Rechercher dans les onglets">
+<!ENTITY findintabs.button.accesskey "O">
+<!ENTITY findintabs.button.tooltip "Recherche dans tous les onglets">
+<!ENTITY findintabs.menu.copy "Copier texte">
+<!ENTITY findintabs.menu.accesskey "C">
+<!ENTITY findintabs.results.label "Résultat de la recherche:">
+<!ENTITY findintabs.closebutton.tooltip "Fermer">
