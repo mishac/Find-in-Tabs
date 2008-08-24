@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<window id="checkCompat" title="Incompatible Extensions Found"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <vbox>
+    <description>The following extensions are incompatible with "Find In Tabs:"</description>
+    <listbox id="extensionsList"></listbox>
+    <checkbox id="disableCheck" label="Disable checking for incompatibility"></checkbox>
+  </vbox>
+</window>
