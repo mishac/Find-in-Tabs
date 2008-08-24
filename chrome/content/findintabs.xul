@@ -59,8 +59,7 @@
     <vbox id="findintabs-results-box" insertbefore="browser-bottombox" hidden="true" flex="1" persist="height">
       <hbox id="findintabs-results-top" flex="0">
         <tree id="findintabs-label-tree" hidecolumnpicker="true" flex="1">
-          <treecols>
-            <treecol id="findintabs-label-icon" width="16" flex="0" sortActive="false" />
+          <treecols id="findintabs-label-treecols">
             <treecol id="findintabs-label-tabnumber" label="&findintabs.tree.tabnumber;" flex="0" persist="width" />
             <splitter class="tree-splitter" oncommand="findInTabs.resizeColumns();" />
             <treecol id="findintabs-label-tabtitle" label="&findintabs.tree.tabtitle;" flex="0" persist="width" />
