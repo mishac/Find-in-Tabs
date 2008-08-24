@@ -5,3 +5,6 @@
 <!ENTITY findintabs.menu.accesskey "C">
 <!ENTITY findintabs.results.label "Résultat de la recherche:">
 <!ENTITY findintabs.closebutton.tooltip "Fermer">
+<!ENTITY findintabs.tree.tabnumber "Onglet">
+<!ENTITY findintabs.tree.tabtitle "Titre de la page">
+<!ENTITY findintabs.tree.tabtext "Résultat">
