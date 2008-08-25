@@ -55,7 +55,7 @@
   </popupset>
   <window id="main-window">
     <hbox id="browser" persist="height" />
-    <splitter id="findintabs-splitter" insertbefore="browser-bottombox" hidden="true" resizeafter="flex" maxheight="1" height="1" />      
+    <splitter id="findintabs-splitter" insertbefore="browser-bottombox" hidden="true" resizeafter="flex" class="chromeclass-extrachrome" />      
     <vbox id="findintabs-results-box" insertbefore="browser-bottombox" hidden="true" flex="1" persist="height">
       <hbox id="findintabs-results-top" flex="0">
         <tree id="findintabs-label-tree" hidecolumnpicker="true" flex="1">
@@ -65,10 +65,10 @@
             <treecol id="findintabs-label-tabtitle" label="&findintabs.tree.tabtitle;" flex="0" persist="width" />
             <splitter class="tree-splitter" oncommand="findInTabs.resizeColumns();" />
             <treecol id="findintabs-label-tabtext" label="&findintabs.tree.tabtext;" flex="1" persist="width" />
+            <splitter class="tree-splitter" oncommand="findInTabs.resizeColumns();" />
           </treecols>
           <treechildren>
-            <!-- dummy content to make javascript stop complaining -->
-            <treeitem /><treeitem /><treeitem />
+            <!-- dummy content to make javascript stop complaining-->
           </treechildren>
         </tree>
         <toolbarbutton id="findintabs-closebutton" class="findbar-closebutton" oncommand="findInTabs.onCloseButton();" tooltiptext="&findintabs.closebutton.tooltip;" flex="0" />
