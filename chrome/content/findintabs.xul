@@ -66,6 +66,10 @@
             <splitter class="tree-splitter" oncommand="findInTabs.resizeColumns();" />
             <treecol id="findintabs-label-tabtext" label="&findintabs.tree.tabtext;" flex="1" persist="width" />
           </treecols>
+          <treechildren>
+            <!-- dummy content to make javascript stop complaining -->
+            <treeitem /><treeitem /><treeitem />
+          </treechildren>
         </tree>
         <toolbarbutton id="findintabs-closebutton" class="findbar-closebutton" oncommand="findInTabs.onCloseButton();" tooltiptext="&findintabs.closebutton.tooltip;" flex="0" />
 	    </hbox>
