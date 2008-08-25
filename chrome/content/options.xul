@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<?xml-stylesheet href="chrome://findintabs/skin/findintabs.css" type="text/css"?>
+<?xml-stylesheet href="chrome://findintabs/skin/options.css" type="text/css"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <!DOCTYPE window SYSTEM "chrome://findintabs/locale/options.dtd">
 <prefwindow xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="findintabs-prefwindow" 
@@ -12,7 +12,7 @@
     <preference id="pref-showfavicon" name="extensions.findintabs.showfavicon" type="bool"/>
     <preference id="pref-showsearchoverlay" name="extensions.findintabs.showsearchoverlay" type="bool"/>
   </preferences>
-  <vbox>
+  <vbox id="pref-main">
     <!--<textbox preference="pref-maxresults" label="Maximum number of results to display" />-->
     <vbox>
       <hbox align="center">
@@ -24,16 +24,17 @@
     <vbox>
       <hbox align="center">
         <label value="&findintabs.preferences.finddelay;" />
-        <textbox preference="pref-finddelay" label="&findintabs.preferences.finddelay;" min="0" max="5000" hidespinbuttons="false" type="number" size="5" maxwidth="30" />
+        <textbox preference="pref-finddelay" label="&findintabs.preferences.finddelay;" min="0" max="5000" hidespinbuttons="false" type="number" size="5" />
       </hbox>
-      <description class="findintabs-warning">
+      <description class="findintabs-warning" maxwidth="700">
         &findintabs.preferences.finddelayWarning;
       </description>
     </vbox>
     <checkbox preference="pref-checkcompatability" label="&findintabs.preferences.checkCompat;" />
     <checkbox preference="pref-showfavicon" label="&findintabs.preferences.showFavicon;" />
-    <checkbox preference="pref-showsearchoverlay" label="&findintabs.preferences.showSearchOverlay;" />
-</vbox>
+	<checkbox preference="pref-showsearchoverlay" label="&findintabs.preferences.showSearchOverlay;" />
+	
+  </vbox>
 </prefpane>
 
 </prefwindow>
