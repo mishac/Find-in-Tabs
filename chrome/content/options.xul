@@ -10,7 +10,7 @@
     <preference id="pref-finddelay" name="extensions.findintabs.finddelay" type="int"/>
     <preference id="pref-checkcompatability" name="extensions.findintabs.checkcompatability" type="bool"/>
     <preference id="pref-showfavicon" name="extensions.findintabs.showfavicon" type="bool"/>
-    <preference id="pref-showfavicon" name="extensions.findintabs.showsearchoverlay" type="bool"/>
+    <preference id="pref-showsearchoverlay" name="extensions.findintabs.showsearchoverlay" type="bool"/>
   </preferences>
   <vbox>
     <!--<textbox preference="pref-maxresults" label="Maximum number of results to display" />-->
@@ -24,7 +24,7 @@
     <vbox>
       <hbox align="center">
         <label value="&findintabs.preferences.finddelay;" />
-        <textbox preference="pref-finddelay" label="&findintabs.preferences.finddelay;" min="0" max="5000" hidespinbuttons="false" type="number" size="5" />
+        <textbox preference="pref-finddelay" label="&findintabs.preferences.finddelay;" min="0" max="5000" hidespinbuttons="false" type="number" size="5" maxwidth="30" />
       </hbox>
       <description class="findintabs-warning">
         &findintabs.preferences.finddelayWarning;
@@ -33,12 +33,7 @@
     <checkbox preference="pref-checkcompatability" label="&findintabs.preferences.checkCompat;" />
     <checkbox preference="pref-showfavicon" label="&findintabs.preferences.showFavicon;" />
     <checkbox preference="pref-showsearchoverlay" label="&findintabs.preferences.showSearchOverlay;" />
-    
-  </vbox>
-</prefpane>     
-<prefpane id="prefspane-appearence" label="&findintabs.preferences.appearance;">
-  <preferences>
-    <description>2first pane</description>
-  </preferences>
-</prefpane>     
+</vbox>
+</prefpane>
+
 </prefwindow>
