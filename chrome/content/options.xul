@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
-<?xml-stylesheet href="chrome://findintabs/skin/options.css" type="text/css"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <!DOCTYPE window SYSTEM "chrome://findintabs/locale/options.dtd">
 <prefwindow xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="findintabs-prefwindow" 
-  title="&findintabs.preferences.windowTitle;" onUnload="">
+	title="&findintabs.preferences.windowTitle;" >
+
+	<script type="application/x-javascript" src="chrome://findintabs/content/options.js" />
+
 <prefpane id="prefspane-general" label="&findintabs.preferences.general;">
   <preferences>
     <preference id="pref-maxresults" name="extensions.findintabs.maxresults" type="int"/>
@@ -13,24 +15,27 @@
     <preference id="pref-showsearchoverlay" name="extensions.findintabs.showsearchoverlay" type="bool"/>
   </preferences>
   <vbox id="pref-main">
-    <!--<textbox preference="pref-maxresults" label="Maximum number of results to display" />-->
-    <vbox>
-      <hbox align="center">
-        <label value="&findintabs.preferences.maxResults;" />
-        <textbox preference="pref-maxresults" label="&findintabs.preferences.maxResults;:" min="0" max="9999" hidespinbuttons="false" type="number" size="5" />
-      </hbox>
-      <description class="findintabs-warning">&findintabs.preferences.maxResultsWarning;</description>
-    </vbox>
-    <vbox>
-      <hbox align="center">
-        <label value="&findintabs.preferences.finddelay;" />
-        <textbox preference="pref-finddelay" label="&findintabs.preferences.finddelay;" min="0" max="5000" hidespinbuttons="false" type="number" size="5" />
-      </hbox>
-      <description class="findintabs-warning" maxwidth="700">
-        &findintabs.preferences.finddelayWarning;
-      </description>
-    </vbox>
-    <checkbox preference="pref-checkcompatability" label="&findintabs.preferences.checkCompat;" />
+    <hbox align="center">
+	  <label value="&findintabs.preferences.maxResults;" />
+	  <textbox preference="pref-maxresults" label="&findintabs.preferences.maxResults;:" min="0" max="9999" hidespinbuttons="false" type="number" size="5" />
+	  <button class="button-icon" icon="help" tooltip="tt-maxresults" oncommand="openPopup('tt-maxresults');" />
+    </hbox>
+	
+    <tooltip id="tt-maxresults" orient="vertical" style="background-color: #33DD00;">
+      <label value="&findintabs.preferences.maxResultsWarning;" />
+    </tooltip>
+
+	<hbox align="center">
+      <label value="&findintabs.preferences.finddelay;" />
+      <textbox preference="pref-finddelay" label="&findintabs.preferences.finddelay;" min="0" max="5000" hidespinbuttons="false" type="number" size="5" />
+	  <button class="button-icon" icon="help" tooltip="tt-delay" oncommand="openPopup('tt-delay');" />
+    </hbox>
+	
+	<tooltip id="tt-delay" orient="vertical" style="background-color: #33DD00;">
+      <label value="&findintabs.preferences.finddelayWarning;" />
+    </tooltip>
+	
+	<checkbox preference="pref-checkcompatability" label="&findintabs.preferences.checkCompat;" />
     <checkbox preference="pref-showfavicon" label="&findintabs.preferences.showFavicon;" />
 	<checkbox preference="pref-showsearchoverlay" label="&findintabs.preferences.showSearchOverlay;" />
 	
@@ -38,3 +43,5 @@
 </prefpane>
 
 </prefwindow>
+
+
