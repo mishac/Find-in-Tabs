@@ -17,15 +17,15 @@
     <caption label="&findintabs.preferences.windowTitle;"/>
     <vbox>
       <hbox align="center">
-    	  <label value="&findintabs.preferences.maxResults;" />
-    	  <textbox preference="pref-maxresults" label="&findintabs.preferences.maxResults;:" min="0" max="9999" hidespinbuttons="false" type="number" size="5" />
+    	  <label value="&findintabs.preferences.maxResults;" flex="1" />
+    	  <textbox preference="pref-maxresults" label="&findintabs.preferences.maxResults;:" min="0" max="9999"  flex="0"  hidespinbuttons="false" type="number" size="5" />
       </hbox>
   	  <description>&findintabs.preferences.maxResultsWarning;</description>
     </vbox>
     <vbox>
   	  <hbox align="center">
-        <label value="&findintabs.preferences.finddelay;" />
-        <textbox preference="pref-finddelay" label="&findintabs.preferences.finddelay;" min="0" max="5000" hidespinbuttons="false" type="number" size="5" />
+        <label value="&findintabs.preferences.finddelay;" flex="1" />
+        <textbox preference="pref-finddelay" label="&findintabs.preferences.finddelay;" min="0" max="5000" hidespinbuttons="false" type="number" size="5" flex="0" />
       </hbox>
 	    <description height="90" width="300">&findintabs.preferences.finddelayWarning;</description>
     </vbox>
