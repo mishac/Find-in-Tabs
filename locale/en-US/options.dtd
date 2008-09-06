@@ -1,6 +1,5 @@
 <!ENTITY findintabs.preferences.windowTitle	"Find In Tabs Preferences">
 <!ENTITY findintabs.preferences.general "General">
-<!ENTITY findintabs.preferences.appearance "Appearance">
 <!ENTITY findintabs.preferences.maxResults "Maximum number of results to display:">
 <!ENTITY findintabs.preferences.maxResultsWarning "Setting this value too high can slow down searching.">
 <!ENTITY findintabs.preferences.finddelay "Delay between searches (miliseconds):">
