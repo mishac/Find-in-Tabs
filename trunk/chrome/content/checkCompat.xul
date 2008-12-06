@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://findintabs/locale/findintabs.dtd">
+
+<window id="checkCompat" title="Incompatible Extensions Found"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script type="application/x-javascript" src="chrome://findintabs/content/checkCompat.js" />
+  <vbox>
+    <description>The following extensions are incompatible with "Find In Tabs":</description>
+    <listbox id="extensionsList" rows="4" width="200"></listbox>
+    <description>
+      It is recommended that these extensions be disabled or uninstalled in order to use Find In Tabs.
+    </description>
+    <checkbox id="disableCheck" label="Disable checking for compatibility"></checkbox>
+    <button label="&findintabs.button.ok;" onclick="checkCompat.close()" />
+  </vbox>
+</window>
