@@ -1,5 +1,5 @@
-<!ENTITY findintabs.preferences.windowTitle "Preferences de recherche en onglet">
-<!ENTITY findintabs.preferences.general "General">
+<!ENTITY findintabs.preferences.windowTitle "Preferences de «Rechercher en Onglet»">
+<!ENTITY findintabs.preferences.general "Général">
 <!ENTITY findintabs.preferences.maxResults "Nombre maximum de résultats à afficher:">
 <!ENTITY findintabs.preferences.maxResultsWarning "Si cette valeur est trop élevée, ça peut ralentir la recherche.">
 <!ENTITY findintabs.preferences.finddelay "Délai entre les recherches (milliseconde):">
