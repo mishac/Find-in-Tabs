@@ -5,5 +5,4 @@
 <!ENTITY findintabs.preferences.finddelay "Delay between searches (miliseconds):">
 <!ENTITY findintabs.preferences.finddelayWarning "While typing, Find In Tabs will show your results after a small delay, to increase performance.  Setting this value too low can increase responsiveness, but slow down the display of search results.">
 <!ENTITY findintabs.preferences.showFavicon "Show each tab's favicon in the results list">
-<!ENTITY findintabs.preferences.showSearchOverlay "Show transparent search overlay">
 <!ENTITY findintabs.preferences.checkCompat "Check for compatibility with other extensions on startup">

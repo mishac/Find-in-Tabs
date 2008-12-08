@@ -1,0 +1,8 @@
+<!ENTITY findintabs.preferences.windowTitle "Preferences de recherche en onglet">
+<!ENTITY findintabs.preferences.general "General">
+<!ENTITY findintabs.preferences.maxResults "Nombre maximum de résultats à afficher:">
+<!ENTITY findintabs.preferences.maxResultsWarning "Si cette valeur est trop élevée, ça peut ralentir la recherche.">
+<!ENTITY findintabs.preferences.finddelay "Délai entre les recherches (milliseconde):">
+<!ENTITY findintabs.preferences.finddelayWarning "Lorsqu'on frappe la clavier, Rechercher en Onglets affichera vos résultats après un petit retard, afin d'augmenter les performances. La définition de cette valeur trop faible peut augmenter la réactivité, mais de ralentir l'affichage des résultats de recherche">
+<!ENTITY findintabs.preferences.showFavicon "Aficher le «favicon» de l'onglet dans la liste de resultats">
+<!ENTITY findintabs.preferences.checkCompat "Verifier la compatibilité avec des autres extensions au demarrage de Firefox">
