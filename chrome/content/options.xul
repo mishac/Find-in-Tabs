@@ -32,7 +32,6 @@
     
 	  <checkbox preference="pref-checkcompatability" label="&findintabs.preferences.checkCompat;" />
     <checkbox preference="pref-showfavicon" label="&findintabs.preferences.showFavicon;" />
-	  <!--checkbox preference="pref-showsearchoverlay" label="&findintabs.preferences.showSearchOverlay;" /-->
 	
   </groupbox>
   <script>
