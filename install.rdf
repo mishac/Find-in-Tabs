@@ -5,7 +5,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>FindInTabs@mishac.com</em:id>
     
-    <em:version>0.4.0.4</em:version>
+    <em:version>0.4.0.5</em:version>
     
     <!-- Front End MetaData -->
     <em:name>Find In Tabs</em:name>

@@ -1,0 +1,11 @@
+<!ENTITY findintabs.button.label "Find i faneblade">
+<!ENTITY findintabs.button.accesskey "d">
+<!ENTITY findintabs.button.tooltip "Find i alle faneblade">
+<!ENTITY findintabs.menu.copy "Kopier tekst">
+<!ENTITY findintabs.menu.accesskey "o">
+<!ENTITY findintabs.results.label "Søgeresultater:">
+<!ENTITY findintabs.closebutton.tooltip "Luk søgeresultater">
+<!ENTITY findintabs.tree.tabnumber "Faneblad #">
+<!ENTITY findintabs.tree.tabtitle "Sidetitel">
+<!ENTITY findintabs.tree.tabtext "Resultattekst">
+<!ENTITY findintabs.button.ok "OK">
