@@ -1,0 +1,8 @@
+<!ENTITY findintabs.preferences.windowTitle	"Find In Tabs Indstillinger">
+<!ENTITY findintabs.preferences.general "Generelt">
+<!ENTITY findintabs.preferences.maxResults "Maksimum antal søgeresultater der vises:">
+<!ENTITY findintabs.preferences.maxResultsWarning "Hvis denne værdi sættes for højt, kan søgningen blive langsom.">
+<!ENTITY findintabs.preferences.finddelay "Forsinkelse mellem søgninger (milisekunder):">
+<!ENTITY findintabs.preferences.finddelayWarning "Mens du taster, vil Find In Tabs vise dine søgeresultater efter en kort forsinkelse, for at øge ydelsen.  Sættes denne værdi for lavt kan følsomheden øges, men forsinke visningen af søgeresultater.">
+<!ENTITY findintabs.preferences.showFavicon "Vis hvert faneblads favoritikon i resultatlisten">
+<!ENTITY findintabs.preferences.checkCompat "Tjek for kompatibilitet med andre tilføjelser ved opstart">
