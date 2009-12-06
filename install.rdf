@@ -5,7 +5,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>FindInTabs@mishac.com</em:id>
     
-    <em:version>0.4.0.5</em:version>
+    <em:version>0.4.0.6</em:version>
     
     <!-- Front End MetaData -->
     <em:name>Find In Tabs</em:name>
@@ -13,6 +13,9 @@
     <em:creator>Michael Havas</em:creator>
     <em:developer>Misha Chitharanjan</em:developer>
     <em:developer>Michael Havas</em:developer>
+
+    <em:translator>J&#248;rgen Rasmussen</em:translator>
+    <em:translator>Andreas Kleinert</em:translator>
     
     <em:homepageURL>https://addons.mozilla.org/en-US/firefox/addon/8078</em:homepageURL>
     

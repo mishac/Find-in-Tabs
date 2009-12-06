@@ -1,0 +1,11 @@
+<!ENTITY findintabs.button.label "In allen Tabs suchen">
+<!ENTITY findintabs.button.accesskey "i">
+<!ENTITY findintabs.button.tooltip "Suchergebnisse aller Tabs auflisten">
+<!ENTITY findintabs.menu.copy "Text kopieren">
+<!ENTITY findintabs.menu.accesskey "k">
+<!ENTITY findintabs.results.label "Suchergebnisse:">
+<!ENTITY findintabs.closebutton.tooltip "Suchergebnisse schließen">
+<!ENTITY findintabs.tree.tabnumber "Tab-Nummer">
+<!ENTITY findintabs.tree.tabtitle "Seitentitel">
+<!ENTITY findintabs.tree.tabtext "Ergebnistext">
+<!ENTITY findintabs.button.ok "OK">
