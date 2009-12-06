@@ -1,0 +1,8 @@
+<!ENTITY findintabs.preferences.windowTitle			"Find In Tabs  - Einstellungen">
+<!ENTITY findintabs.preferences.general				"Allgemein">
+<!ENTITY findintabs.preferences.maxResults			"Maximale Anzahl von Suchergebnissen anzeigen:">
+<!ENTITY findintabs.preferences.maxResultsWarning	"Zu hoch eingestellte Werte konnen das Durchsuchen verlangsamen">
+<!ENTITY findintabs.preferences.finddelay			"Suchergebnisse um den eingestellten Wert (in Millisekunden) verzögert ausgeben:">
+<!ENTITY findintabs.preferences.finddelayWarning	"Während der Eingabe wird &quot;Find In Tabs&quot; zur Verbesserung dessen Leistung die Ergebnisse erst nach der eingestellten Verzögerung  anzeigen. Zu niedrige Werte können zwar das Reaktionsverhalten erhöhen, verlangsamen aber auch die Ausgabe der Suchergebnisse.">
+<!ENTITY findintabs.preferences.showFavicon			"Seitenidentifikationssymbol (Favicon) der Tabs in den Suchergebnissen anzeigen">
+<!ENTITY findintabs.preferences.checkCompat			"Beim Start die Kompatibilität mit anderen Erweiterungen überprüfen">
