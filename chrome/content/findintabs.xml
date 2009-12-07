@@ -198,6 +198,7 @@
     </handlers>
   </binding>
 
+  <!-- FitBegin -->
   <binding id="findintabs"
            extends="chrome://global/content/bindings/toolbar.xml#toolbar">
     <resources>
@@ -1113,14 +1114,14 @@
           prefsvc.setIntPref("accessibility.typeaheadfind.casesensitive",
                              aCaseSensitive ? 1 : 0);
 
-          // <FindInTabs>
+          // FitBegin
           //toggling case sensitivity should make it refind
           var word = this._findField.value;
 
           if (findInTabs.isFindInTabs && word) {
             this._find();
           }
-          // </FindInTabs>
+          // FiTEnd
 
         ]]></body>
       </method>
