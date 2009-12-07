@@ -46,6 +46,10 @@
 <!DOCTYPE bindings [
 <!ENTITY % findBarDTD SYSTEM "chrome://global/locale/findbar.dtd" >
 %findBarDTD;
+<!ENTITY % globalDTD SYSTEM "chrome://global/locale/global.dtd">
+%globalDTD;
+<!ENTITY % findInTabsDTD SYSTEM "chrome://findintabs/locale/findintabs.dtd">
+%findInTabsDTD;
 ]>
 
 <bindings id="findbarBindings"
@@ -194,10 +198,11 @@
     </handlers>
   </binding>
 
-  <binding id="findbar"
+  <binding id="findintabs"
            extends="chrome://global/content/bindings/toolbar.xml#toolbar">
     <resources>
       <stylesheet src="chrome://global/skin/findBar.css"/>
+      <stylesheet src="chrome://findintabs/skin/findintabs.css"/>
     </resources>
 
     <content hidden="true">
@@ -246,6 +251,19 @@
                          type="checkbox"
                          disabled="true"
                          xbl:inherits="accesskey=highlightaccesskey"/>
+
+<!-- FindInTabs -->
+      <xul:toolbarbutton
+          anonid="findbar-findintabs-check"
+          class="findbar-findintabs tabbable"
+          id="findbar-findintabs-check"
+          oncommand="_setFindInTabs(this.checked);"
+          label="&findintabs.button.label;"
+          accesskey="&findintabs.button.accesskey;"
+          type="checkbox"
+          xbl:inherits="accesskey=findintabsaccesskey" />
+<!-- /FindInTabs -->
+
       <xul:checkbox anonid="find-case-sensitive"
                     oncommand="_setCaseSensitivity(this.checked);"
                     label="&caseSensitiveCheckbox.label;"
@@ -457,7 +475,7 @@
       </method>
 
       <!--
-        - Gets the selection controller for the current browser 
+        - Gets the selection controller for the current browser
         -->
       <method name="_getSelectionController">
         <parameter name="aWindow"/>
@@ -496,7 +514,7 @@
             }
             aNode = aNode.parentNode;
           }
-          return null;           
+          return null;
         ]]></body>
       </method>
 
@@ -525,7 +543,7 @@
       <!--
         - Remove ourselves as an nsIEditActionListener and
         - nsIDocumentStateListener from a given cached editor
-        - 
+        -
         - @param aEditor the editor we no longer wish to listen to
         -->
       <method name="_removeEditorListeners">
@@ -544,7 +562,7 @@
 
       <!--
         - nsIEditActionListener logic follows
-        - 
+        -
         - We implement this interface to allow us to catch the case where
         - the findbar found a match in a HTML <input> or <textarea>. If the
         - user adjusts the text in some way, it will no longer match, so we
@@ -617,7 +635,7 @@
 
           if (foundContainingRange)
             return range;
-          
+
           return null;
         ]]></body>
       </method>
@@ -1003,7 +1021,7 @@
             }
             return true;
           }
-  
+
           return textFound;
         ]]></body>
       </method>
@@ -1094,7 +1112,33 @@
           // Just set the pref; our observer will change the find bar behavior
           prefsvc.setIntPref("accessibility.typeaheadfind.casesensitive",
                              aCaseSensitive ? 1 : 0);
+
+          // <FindInTabs>
+          //toggling case sensitivity should make it refind
+          var word = this._findField.value;
+
+          if (findInTabs.isFindInTabs && word) {
+            this._find();
+          }
+          // </FindInTabs>
+
         ]]></body>
+      </method>
+
+
+      <!--
+        - FINDINTABS
+        - sets the findintabs broadcaster on or off;
+        - @param aFindInTabs (boolean)
+        -        Whether or not findintabs should be turned on.
+        -->
+      <method name="_setFindInTabs">
+        <parameter name="aFindInTabs"/>
+        <body><![CDATA[
+          findInTabs.toggleResultsList(aFindInTabs);
+
+        ]]></body>
+
       </method>
 
       <!--
@@ -1384,7 +1428,7 @@
             catch (e) {
               // If someone built with composer disabled, we can't get an editing session.
             }
-          }  
+          }
 
           return true;
         ]]></body>
@@ -1700,7 +1744,7 @@
           }
 
           if (this.prefillWithSelection)
-            userWantsPrefill = 
+            userWantsPrefill =
               prefsvc.getBoolPref("accessibility.typeaheadfind.prefillwithselection");
 
           var initialString = (this.prefillWithSelection && userWantsPrefill) ?
