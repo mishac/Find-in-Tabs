@@ -72,12 +72,7 @@
       <xul:label anonid="find-label" class="findbar-find-fast" control="findbar-textbox"/>
       <xul:textbox class="findbar-textbox findbar-find-fast" anonid="findbar-textbox"
                    xbl:inherits="flash"/>
-      <xul:toolbarbutton anonid="clear-findbar"
-                         class="findbar-clear-findbar tabbable"
-                         label="&findbarbasics.clearbuttonlabel;"
-                         tooltiptext="&findbarbasics.clearbuttontooltip;"
-                         oncommand="clearBar();"
-                         disabled="true"/>
+
       <xul:toolbarbutton anonid="find-next"
                          class="findbar-find-next tabbable"
                          label="&next.label;"
@@ -103,6 +98,16 @@
                          type="checkbox"
                          disabled="true"
                          xbl:inherits="accesskey=highlightaccesskey"/>
+      <xul:toolbarbutton
+          anonid="findbar-findintabs-check"
+          class="findbar-findintabs tabbable"
+          id="findbar-findintabs-check"
+          oncommand="_setFindInTabs(this.checked);"
+          label="&findintabs.button.label;"
+          accesskey="&findintabs.button.accesskey;"
+          type="checkbox"
+          xbl:inherits="accesskey=findintabsaccesskey" />
+
       <xul:checkbox anonid="find-case-sensitive"
                     oncommand="_setCaseSensitivity(this.checked);"
                     label="&caseSensitiveCheckbox.label;"
@@ -123,7 +128,7 @@
         <body><![CDATA[
             this.getElement("find-next").disabled =
             this.getElement("find-previous").disabled =
-            this.getElement("clear-findbar").disabled =
+            this.getElement("findbar-findintabs-check"").disabled =
             this.getElement("highlight").disabled = !aEnable;
         ]]></body>
       </method>
