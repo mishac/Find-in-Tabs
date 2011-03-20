@@ -5,7 +5,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>FindInTabs@mishac.com</em:id>
 
-    <em:version>0.4.1.0</em:version>
+    <em:version>0.5.0.0</em:version>
 
     <!-- Front End MetaData -->
     <em:name>Find In Tabs</em:name>
@@ -23,12 +23,12 @@
 
 
     <!-- Target Application this extension can install into,
-	 with minimum and maximum supported versions. -->
+         with minimum and maximum supported versions. -->
     <em:targetApplication>
       <Description>
-	<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-	<em:minVersion>3.0</em:minVersion>
-	<em:maxVersion>3.5.*</em:maxVersion>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>3.0</em:minVersion>
+        <em:maxVersion>4.0.*</em:maxVersion>
       </Description>
 
     </em:targetApplication>
