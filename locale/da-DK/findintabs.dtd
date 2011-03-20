@@ -9,3 +9,4 @@
 <!ENTITY findintabs.tree.tabtitle "Sidetitel">
 <!ENTITY findintabs.tree.tabtext "Resultattekst">
 <!ENTITY findintabs.button.ok "OK">
+<!ENTITY findintabs.button.tooltiptext "Find i Faneblade">

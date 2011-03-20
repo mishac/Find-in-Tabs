@@ -9,3 +9,4 @@
 <!ENTITY findintabs.tree.tabtitle "Seitentitel">
 <!ENTITY findintabs.tree.tabtext "Ergebnistext">
 <!ENTITY findintabs.button.ok "OK">
+<!ENTITY findintabs.button.tooltiptext "In allen Tabs suchen">
