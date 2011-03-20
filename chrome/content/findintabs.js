@@ -34,37 +34,37 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-
- var findInTabs = {
+ 
+var findInTabs = {
 
   onLoad: function _onLoad() {
     //load prefs
-    this.accessPrefs = Components.classes["@mozilla.org/preferences-service;1"]
-                .getService(Components.interfaces.nsIPrefBranch)
-                .getBranch("accessibility.typeaheadfind.");
+    this.app = Components.classes["@mozilla.org/fuel/application;1"].getService(Components.interfaces.fuelIApplication);
 
-    this.fitPrefs = Components.classes["@mozilla.org/preferences-service;1"]
-                .getService(Components.interfaces.nsIPrefBranch)
-                .getBranch("extensions.findintabs.");
-    this.fitPrefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
-
-    this.fitPrefs.addObserver("", this, false);
-
-    this.enableSound = this.accessPrefs.getBoolPref("enablesound");
-    this.soundURL = this.accessPrefs.getCharPref("soundURL");
-
-    this.checkCompat = this.fitPrefs.getBoolPref("checkcompatability");
-    this.maxResults = this.fitPrefs.getIntPref("maxresults");
-    this.findDelay = this.fitPrefs.getIntPref("finddelay");
-    this.showFavicon = this.fitPrefs.getBoolPref("showfavicon");
-
+    this.enableSound = this.app.prefs.getValue("accessibility.typeaheadfind.enablesound", '');
+    this.soundURL = this.app.prefs.getValue("accessibility.typeaheadfind.soundURL", '');
+    this.checkCompat = this.app.prefs.getValue("extensions.findintabs.checkcompatability", true);
+    this.maxResults = this.app.prefs.getValue("extensions.findintabs.maxresults", 200);
+    this.findDelay = this.app.prefs.getValue("extensions.findintabs.finddelay", 100);
+    this.showFavicon = this.app.prefs.getValue("extensions.findintabs.showfavicon", true);
 
     this.findTimeout = 0;
-
 
     if (this.checkCompat) {
       this.compatabilityCheck();
     }
+    
+    // Add preference change observers
+    this.app.prefs.get("extensions.findintabs.showfavicon").events.addListener('change', function(event) {
+      this.showFavicon = this.app.prefs.getValue("extensions.findintabs.showfavicon", true);
+      this.showFaviconColumn(this.showFavicon);
+    });
+    this.app.prefs.get("extensions.findintabs.maxresults").events.addListener('change', function(event) {
+      this.maxResults = this.app.prefs.getValue("extensions.findintabs.maxresults", 200);
+    });
+    this.app.prefs.get("extensions.findintabs.maxresults").events.addListener('change', function(event) {
+      this.findDelay = this.app.prefs.getValue("extensions.findintabs.finddelay", 100);
+    });
 
     this.HIGHLIGHT_CLASS = "__mozilla-findbar-search";
 
@@ -636,22 +636,6 @@
     this.tabnumberStyle.style.setProperty("width", width, "important");
   },
 
-  observe: function _observe(subject, topic, data) {
-    if (topic == "nsPref:changed") {
-      switch (data) {
-        case "maxresults":
-          this.maxResults = this.fitPrefs.getIntPref("maxresults");
-          break;
-        case "finddelay":
-          this.findDelay = this.fitPrefs.getIntPref("finddelay");
-          break;
-        case "showfavicon":
-          this.showFavicon = this.fitPrefs.getBoolPref("showfavicon");
-          this.showFaviconColumn(this.showFavicon);
-          break;
-      }
-    }
-  }
 }
 
 // overload functions of the findbar to take advantage of fintintabs
