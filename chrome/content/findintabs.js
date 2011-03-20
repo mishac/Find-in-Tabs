@@ -38,9 +38,17 @@
 var findInTabs = {
 
   onLoad: function _onLoad() {
+    //load jQuery
+    this.$ = (function(wnd) {
+      var loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
+                      .getService(Components.interfaces.mozIJSSubScriptLoader)
+      loader.loadSubScript("chrome://findintabs/content/jquery-1.5.js",wnd);
+      var jQuery = wnd.jQuery.noConflict(true);
+      return jQuery;
+    })(window);
+    
     //load prefs
     this.app = Components.classes["@mozilla.org/fuel/application;1"].getService(Components.interfaces.fuelIApplication);
-
     this.enableSound = this.app.prefs.getValue("accessibility.typeaheadfind.enablesound", '');
     this.soundURL = this.app.prefs.getValue("accessibility.typeaheadfind.soundURL", '');
     this.checkCompat = this.app.prefs.getValue("extensions.findintabs.checkcompatability", true);
@@ -73,19 +81,19 @@ var findInTabs = {
 
     //useful elements
     this.strings = document.getElementById("findintabs-strings");
-    this.checkbox = document.getElementById("findbar-findintabs-check");
-    this.resultsBox =  document.getElementById("findintabs-results-box");
-    this.resultsList = document.getElementById("findintabs-results-list");
-    this.statusLabel = gFindBar.getElement("match-findintabs-status");
-    this.splitter = document.getElementById("findintabs-splitter");
-    this.resultsBox.addEventListener("keypress", this.onKeyPress, false);
-    this.statusbar = document.getElementById("status-bar");
-    this.labelTree = document.getElementById("findintabs-label-tree");
-    this.labelTreeCols = document.getElementById("findintabs-label-treecols");
+    this.checkbox = this.$("#findbar-findintabs-check", document);
+    this.resultsBox =  this.$("#findintabs-results-box", document);
+    this.resultsBox.bind("keypress", this.onKeyPress);
+    
+    this.resultsList = this.$("#findintabs-results-list", document);
+    this.statusLabel = this.$("#match-findintabs-status", gFindBar);
+    this.splitter = this.$("#findintabs-splitter", document);
+    this.labelTree = this.$("#findintabs-label-tree", document);
+    this.labelTreeCols = this.$("#findintabs-label-treecols", document);
 
-    this.tabNumberLabel =  document.getElementById("findintabs-label-tabnumber");
-    this.tabTitleLabel =  document.getElementById("findintabs-label-tabtitle");
-    this.tabTextLabel =  document.getElementById("findintabs-label-tabtext");
+    this.tabNumberLabel =  this.$("#findintabs-label-tabnumber", document);
+    this.tabTitleLabel =  this.$("#findintabs-label-tabtitle", document);
+    this.tabTextLabel =  this.$("#findintabs-label-tabtext", document);
 
     this.showFaviconColumn(this.showFavicon);
 
@@ -130,31 +138,26 @@ var findInTabs = {
 
   showFaviconColumn: function _showFaviconColumn(aBool) {
     if (aBool) {
-      this.faviconLabel = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul",
-          "treecol");
-      this.faviconLabel.setAttribute("id", "findintabs-label-icon");
-      this.faviconLabel.setAttribute("fixed", "true");
-      this.labelTreeCols.insertBefore(this.faviconLabel, this.labelTreeCols.firstChild);
+      this.faviconLabel = this.$("<treecol />");
+      this.faviconLabel.attr("id", "findintabs-label-icon");
+      this.faviconLabel.attr("fixed", "true");
+      this.labelTreeCols.prepend(this.faviconLabel);
       if (this.isFindInTabs) {
-
-        var listitems = this.resultsList.getElementsByTagName("richlistitem");
-        for (var i = 0; i < listitems.length; i++) {
-          var item = this.searchResults[i];
-          var hbox = listitems.item(i).firstChild;
-      	  var faviconCell = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "image");
+       this.resultsList.children("richlistitem").each(function(i, el) {
+          var item = this.searchResults[i],
+                     faviconCell = $('<image />');
+          //document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "image");
           var faviconURI = this.getFaviconURI(item.ownerTab);
-      	  faviconCell.setAttribute("class", "findintabs-favicon");
-      	  faviconCell.setAttribute("src", faviconURI);
-      	  faviconCell.setAttribute("tooltiptext", hbox.firstChild.getAttribute("tooltiptext"));
-
-          hbox.insertBefore(faviconCell, hbox.firstChild);
-
-        }
+      	  faviconCell.addClass("findintabs-favicon");
+      	  faviconCell.attr("src", faviconURI);
+      	  faviconCell.attr("tooltiptext", hbox.firstChild.getAttribute("tooltiptext"));
+          $(el).children(":first").prepend(faviconCell);
+        });
       }
     } else {
       if (this.faviconLabel) {
-        this.labelTreeCols.removeChild(this.faviconLabel);
-        this.removeNodes(this.resultsList, "findintabs-favicon");
+        this.labelTreeCols.empty();
+        this.$(".findintabs-favicon", this.resultsList).remove();
       }
 
     }
@@ -305,9 +308,7 @@ var findInTabs = {
     if(delHighlight == undefined) {
       delHighlight = true; // Optional param to remove the highlighting
     }
-    while (this.resultsList.hasChildNodes()) {
-      this.resultsList.removeChild(this.resultsList.lastChild);
-    }
+    this.resultsList.empty()
     this.searchResults.length = 0;
 
     var numTabs = gBrowser.browsers.length;
@@ -330,8 +331,8 @@ var findInTabs = {
 
   toggleResultsList: function _toggleResultsList(aFindInTabs) {
     this.isFindInTabs = aFindInTabs;
-    this.resultsBox.hidden =  !this.isFindInTabs;
-    this.splitter.hidden = !this.isFindInTabs;
+    this.resultsBox.attr('hidden', !this.isFindInTabs);
+    this.splitter.attr('hidden', !this.isFindInTabs);
 
     if (this.isFindInTabs) {
 
@@ -339,12 +340,12 @@ var findInTabs = {
 
       gFindBar.getElement("highlight").checked = false;
       gFindBar.getElement("highlight").disabled = true;
-      this.statusLabel.value = this.strings.getFormattedString("findInTabsStatus", []);
-      this.statusLabel.hidden = gFindBar._findMode == gFindBar.FIND_NORMAL;
+      this.statusLabel.attr('value', this.strings.getFormattedString("findInTabsStatus", []));
+      this.statusLabel.attr('hidden', (gFindBar._findMode == gFindBar.FIND_NORMAL));
       this.resizeColumns();
     } else {
       this.clearList(!this.wasHighlighted);
-      this.statusLabel.value = "";
+      this.statusLabel.attr('value', "");
       gFindBar.getElement("highlight").checked = this.wasHighlighted; // Remember status of highlight
       gFindBar.getElement("highlight").disabled = false;
     }
@@ -356,11 +357,11 @@ var findInTabs = {
 
   onSelectItem: function _selectItem() {
     var list = this.resultsList;
-    if (!this.searchResults[list.currentIndex])
+    if (!this.searchResults[list.attr('currentIndex')])
       return;
 
-    var tabNum = this.searchResults[list.currentIndex].ownerTab;
-    var range =  this.searchResults[list.currentIndex].range;
+    var tabNum = this.searchResults[list.attr('currentIndex')].ownerTab;
+    var range =  this.searchResults[list.attr('currentIndex')].range;
 
     gBrowser.mTabContainer.selectedIndex = tabNum;
     var win = gBrowser.getBrowserAtIndex(tabNum).contentWindow;
@@ -596,9 +597,9 @@ var findInTabs = {
   },
 
   copyText: function _copyText() {
-    var range = this.searchResults[this.resultsList.currentIndex];
+    var range = this.searchResults[this.resultsList.attr('currentIndex')];
 
-    var text = this.resultsList.getSelectedItem(0).textContent;
+    var text = this.resultsList[0].getSelectedItem(0).textContent;
 
     const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
                              getService(Components.interfaces.nsIClipboardHelper);
@@ -625,14 +626,14 @@ var findInTabs = {
   onCloseButton: function _onCloseButton() {
     gFindBar.getElement("highlight").checked = this.wasHighlighted; // Remembers whether we were highlighting prior.
     gFindBar.getElement("highlight").disabled = false;
-    this.checkbox.checked = false;
+    this.checkbox.attr('checked', false);
     gFindBar._setFindInTabs(false);
   },
 
   resizeColumns: function _resizeColumns() {
-    var width = this.tabTitleLabel.boxObject.width + "px";
+    var width = this.tabTitleLabel[0].boxObject.width + "px";
     this.tabtitleStyle.style.setProperty("width", width, "important");
-    width = this.tabNumberLabel.boxObject.width + "px";
+    width = this.tabNumberLabel[0].boxObject.width + "px";
     this.tabnumberStyle.style.setProperty("width", width, "important");
   },
 
@@ -666,7 +667,7 @@ var findBarOverLoad = {
     gFindBar.onFindAgainCommand_old = gFindBar.onFindAgainCommand;
     gFindBar.onFindAgainCommand = function _newOnFindAgainCommand(aFindPrevious) {
       if (findInTabs.isFindInTabs) {
-        var list = findInTabs.resultsList;
+        var list = findInTabs.resultsList[0];
         list.focus();
 
         if (aFindPrevious)
