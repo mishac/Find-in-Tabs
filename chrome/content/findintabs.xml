@@ -47,8 +47,8 @@
 <!DOCTYPE bindings [
 <!ENTITY % findBarDTD SYSTEM "chrome://global/locale/findbar.dtd" >
 %findBarDTD;
-<!ENTITY % findbarbasicsDTD SYSTEM "chrome://findintabs/locale/findintabs.dtd">
-%findintabsDTD;
+<!ENTITY % findInTabsDTD SYSTEM "chrome://findintabs/locale/findintabs.dtd">
+%findInTabsDTD;
 ]>
 
 <bindings id="findintabsBindings"
@@ -98,15 +98,16 @@
                          type="checkbox"
                          disabled="true"
                          xbl:inherits="accesskey=highlightaccesskey"/>
-      <xul:toolbarbutton
-          anonid="findbar-findintabs-check"
-          class="findbar-findintabs tabbable"
-          id="findbar-findintabs-check"
-          oncommand="_setFindInTabs(this.checked);"
-          label="&findintabs.button.label;"
-          accesskey="&findintabs.button.accesskey;"
-          type="checkbox"
-          xbl:inherits="accesskey=findintabsaccesskey" />
+
+      <xul:toolbarbutton anonid="findbar-findintabs-check"
+                         class="findbar-findintabs tabbable"
+                         label="&findintabs.button.label;"
+                         accesskey="&findintabs.button.accesskey;"
+                         tooltiptext="&findintabs.button.tooltip;"
+                         oncommand="_setFindInTabs(this.checked);"
+                         type="checkbox"
+                         disabled="true"
+                         xbl:inherits="accesskey=findintabsaccesskey"/>
 
       <xul:checkbox anonid="find-case-sensitive"
                     oncommand="_setCaseSensitivity(this.checked);"
@@ -123,16 +124,23 @@
     </content>
 
     <implementation implements="nsIDOMEventListener, nsIEditActionListener">
+      <!-- Capture findbar object so that we can fake the inheritance -->
+      <constructor><![CDATA[
+        alert("I'm findintabs");
+        _findbar = this;
+      ]]></constructor>
+
+      <destructor><![CDATA[
+        this.destroy();
+      ]]></destructor>
+
       <method name="_enableFindButtons">
         <parameter name="aEnable"/>
         <body><![CDATA[
-            this.getElement("find-next").disabled =
-            this.getElement("find-previous").disabled =
-            this.getElement("findbar-findintabs-check"").disabled =
-            this.getElement("highlight").disabled = !aEnable;
+            this.getElement("findbar-findintabs-check").disabled = !aEnable;
         ]]></body>
+
       </method>
     </implementation>
-
   </binding>
 </bindings>
