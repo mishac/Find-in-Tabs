@@ -126,12 +126,12 @@
     <implementation implements="nsIDOMEventListener, nsIEditActionListener">
       <!-- Capture findbar object so that we can fake the inheritance -->
       <constructor><![CDATA[
-        alert("I'm findintabs");
-        _findbar = this;
+        // alert("I'm findintabs");
+        // _findbar = this;
       ]]></constructor>
 
       <destructor><![CDATA[
-        this.destroy();
+        // this.destroy();
       ]]></destructor>
 
       <method name="_enableFindButtons">
